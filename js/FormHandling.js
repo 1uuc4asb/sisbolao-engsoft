@@ -25,7 +25,8 @@ FormHandling.prototype.cadastrarUsuario = function () {
     xmlhttp.send();
 }
 
-FormHandling.prototype.validarFormulario = function (e) {
+FormHandling.prototype.validarFormulario = function (e, form) {
+    var formHandler = this;
     e.preventDefault();
     var check = true;
     var input = $('.validate-input .input100');
@@ -36,16 +37,17 @@ FormHandling.prototype.validarFormulario = function (e) {
         var validation = this.validate(input[i]);
         //console.log(validation);
         if (validation.answer == false) {
-            this.showValidate(input[i], validation.type);
+            formHandler.showValidate(input[i], validation.type);
             verifylogin_flag = false;
             console.log(input[i].id == "input-login");
             check = false;
         }
     }
-    var formao = this;
-    var form_id = this.id;
-    //console.log(this);
+    var formao = form;
+    var form_id = formao.id;
+    console.log("alou");
     if (verifylogin_flag) {
+        console.log("alo2");
         var xmlhttp2;
         if (window.XMLHttpRequest) {
             xmlhttp2 = new XMLHttpRequest();
@@ -53,6 +55,7 @@ FormHandling.prototype.validarFormulario = function (e) {
             xmlhttp2 = new ActiveXObject("Microsoft.XMLHTTP");
         }
         if (form_id == "login-form") {
+            console.log("alo3");
             xmlhttp2.onreadystatechange = function () {
                 if (xmlhttp2.readyState == 4 && xmlhttp2.status == 200) {
                     if (xmlhttp2.responseText == "exist") {
@@ -72,7 +75,7 @@ FormHandling.prototype.validarFormulario = function (e) {
                                     $("#" + form_id).submit();
                                     //alert("entrou aq :)");
                                 } else {
-                                    this.showValidate($("#pass-input"), 5);
+                                    formHandler.showValidate($("#pass-input"), 5);
                                     check = false;
                                 }
                             }
@@ -83,7 +86,7 @@ FormHandling.prototype.validarFormulario = function (e) {
                     } else {
                         //Mostrar em div que o login ta incorreto
                         console.log("!existe");
-                        this.showValidate($("#login-input"), 4);
+                        formHandler.showValidate($("#login-input"), 4);
                         check = false;
                     }
                 }
@@ -94,7 +97,7 @@ FormHandling.prototype.validarFormulario = function (e) {
                     if (xmlhttp2.responseText == "exist") {
                         // div mostrar que usuário está em uso!
                         console.log(xmlhttp2.responseText);
-                        this.showValidate($("#login-input2"), 3);
+                        formHandler.showValidate($("#login-input2"), 3);
                         check = false;
                     } else {
                         $(document).off("submit");

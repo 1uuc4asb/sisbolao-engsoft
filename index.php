@@ -86,6 +86,7 @@
                     <script src=\"vendor/countdowntime/countdowntime.js\"></script>
                     <!--===============================================================================================-->
                     <script src=\"js/style.js\"></script>
+                <script src=\"js/FormHandling.js\"></script>
                 <script src=\"js/index.js\"></script>
 
                 </body>
@@ -172,6 +173,7 @@
                     <script src=\"vendor/countdowntime/countdowntime.js\"></script>
                     <!--===============================================================================================-->
                     <script src=\"js/style.js\"></script>
+                <script src=\"js/FormHandling.js\"></script>
                 <script src=\"js/index.js\"></script>
 
                 </body>

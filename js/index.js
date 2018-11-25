@@ -18,7 +18,7 @@
         [ Validate ]*/
 
     $(document).on('submit', '.validate-form', function (e) {
-        formHandling.validarFormulario(e);
+        formHandling.validarFormulario(e, this);
     });
 
     $(document).on("focus", '.validate-form .input100', function () {
