@@ -1,4 +1,10 @@
-var FormHandling = function () {}
+var FormHandling = function (oi) {
+    const teste = oi;
+}
+
+FormHandling.prototype.getTeste = function () {
+    return this.teste;
+}
 
 FormHandling.prototype.cadastrarUsuario = function () {
     var xmlhttp;

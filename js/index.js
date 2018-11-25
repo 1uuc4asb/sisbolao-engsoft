@@ -3,11 +3,13 @@
     //Assim que iniciarmos a pagina index.php inciaremos este script.
 
     //Instanciar o objeto de form handling
-    var formHandling = new FormHandling();
+    var formHandling = new FormHandling("oi");
 
     //Realizar requisição http para chamar a página de cadastro
     $(document).on("click", "#cadastro", function () {
         formHandling.cadastrarUsuario();
+        console.log(formHandling.teste);
+        console.log(formHandling.getTeste());
     });
 
 
