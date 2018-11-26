@@ -59,9 +59,15 @@
                 <body>
                     <div class=\"limiter\">
                         <div class=\"container-login100\">
-                            <div class=\"wrap\">
+                            <ul style=\"width: 100%;\">
+                                <li style=\"float: left;\"> Criar Bolão </li>
+                                  <li> Logout </li>
+                                   <span style=\"float: right; padding: 14px 16px;border-radius: 10px;\"> E ai administrador $login_cookie! </span>
+                            </ul>
+                            <div id=\"bolao_panel\">
                                 Eai administrador $login_cookie!
-                                Beleza, seu usuário existe, mas eu ainda não fiz uma página pra isso kk <br/> Eu irei te deslogar para que você possa ter a incrível emoção de logar novamente. Basta atualizar a página.<br/>
+                                Beleza, seu usuário existe, mas eu ainda estou fazendo uma página pra isso kk <br/> Eu irei te deslogar (enquanto o botão de deslogar ainda nõ funciona) para que você possa ter a incrível emoção de logar novamente. Basta atualizar a página.<br/>
+                                Aqui irão aparecer os bolões. Já já você verá! </br>
                                 <a href=\"../index.php\"> Atualize a página para mim </a>
                             </div>
                         </div>
@@ -263,9 +269,9 @@
                                     <span class=\"txt1\">
                                         Não tem conta?
                                     </span>
-                                    <a id=\"cadastro\" class=\"txt2\">
+                                    <span id=\"cadastro\" class=\"txt2\">
                                         Cadastre-se
-                                    </a>
+                                    </span>
                                 </div>
                             </form>
                         </div>
