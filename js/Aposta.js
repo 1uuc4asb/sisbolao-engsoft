@@ -1,20 +1,23 @@
-var Aposta = function () {
+class Aposta {
 
-    this.valor = "";
-    this.dono = "";
-}
-Aposta.prototype.getValor = function () {
+    constructor (dono,valor) {
+        this.dono = dono;
+        this.valor = valor;
+    }
 
-}
+    getValor() {
 
-Aposta.prototype.setValor = function () {
+    }
 
-}
+    setValor() {
 
-Aposta.prototype.getDono = function () {
+    }
 
-}
+    getDono() {
 
-Aposta.prototype.setDono = function () {
+    }
 
+    setDono() {
+
+    }
 }

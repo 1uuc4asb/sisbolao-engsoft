@@ -1,17 +1,21 @@
-function Administrador() {
-    var criarBolao = function () {
+class Administrador extends Usuario {
+    constructor (login) {
+        super(login);
+    }
+    
+    criarBolao() {
 
     }
 
-    var excluirBolao = function () {
+    excluirBolao() {
 
     }
 
-    var convidarAPostadorParaBolao = function () {
+    convidarAPostadorParaBolao() {
 
     }
 
-    var registrarResultadoJogo = function () {
+    registrarResultadoJogo() {
 
     }
 }

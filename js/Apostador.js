@@ -1,29 +1,35 @@
-var Apostador = function () {
-    this.boloes = "";
-    this.convites = "";
-    this.jogos_apostados = "";
-    this.bolaoxpontacao = "";
-}
-Apostador.prototype.analisarconvites = function () {
+class Apostador {
+   /* #boloes = "";
+    #convites = "";
+    #jogos_apostados = "";        FAZER GETTERS AND SETTERS DESSES GAROTOS
+    #bolaoxpontacao = "";
+    */
+    
+    constructor (login) {
+        super(login);
+    }
 
-}
+    analisarconvites() {
 
-Apostador.prototype.responderconvite = function (id_bolao) {
+    }
 
-}
+    responderconvite(id_bolao) {
 
-Apostador.prototype.visualizarjogos = function () {
+    }
 
-}
+    visualizarjogos() {
 
-Apostador.prototype.inserirpalpite = function (id_jogo, valor) {
+    }
 
-}
+    inserirpalpite(id_jogo, valor) {
 
-Apostador.prototype.editarpalpite = function (id_jogo, valor) {
+    }
 
-}
+    editarpalpite(id_jogo, valor) {
 
-Apostador.prototype.verificarranking = function (id_bolao) {
+    }
 
+    verificarranking(id_bolao) {
+
+    }
 }

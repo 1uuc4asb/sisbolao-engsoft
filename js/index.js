@@ -3,7 +3,9 @@
     //Assim que iniciarmos a pagina index.php inciaremos este script.
 
     //Instanciar o objeto de form handling
-    var formHandling = new FormHandling("oi");
+    var formHandling = new FormHandling();
+    
+    // https://www.w3schools.com/js/js_cookies.asp -- COMO VERIRFICAR OS COOKIES. VAMOS TRABALAHR COM ISSO.
 
     //Realizar requisição http para chamar a página de cadastro
     $(document).on("click", "#cadastro", function () {

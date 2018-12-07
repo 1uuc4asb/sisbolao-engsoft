@@ -58,7 +58,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFmrLmZsoIJR2w="
 											},
-											"font": "Arial;13;1",
+											"font": "Arial;13;3",
 											"left": 589,
 											"top": 63,
 											"width": 183,
@@ -240,9 +240,9 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 320,
-									"top": -48,
-									"width": 10,
+									"left": 645.3310546875,
+									"top": 56,
+									"width": 130.6689453125,
 									"height": 10
 								}
 							],
@@ -5366,7 +5366,8 @@
 							},
 							"name": "setLogin"
 						}
-					]
+					],
+					"isAbstract": true
 				},
 				{
 					"_type": "UMLClass",
@@ -6519,7 +6520,8 @@
 								"$ref": "AAAAAAFmrLr1d4McBFU="
 							},
 							"name": "administrador",
-							"visibility": "private"
+							"visibility": "private",
+							"type": ""
 						}
 					],
 					"operations": [

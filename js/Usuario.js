@@ -1,14 +1,25 @@
-var Usuario = function (login) {
-    this.login = login;
-}
+class Usuario {
+    // #login; 
+    constructor (login) {
+        if(new.target === Usuario) {
+            if (new.target === Abstract) {
+              throw new TypeError("Cannot construct Abstract instances directly");
+            }
+        }
+        else {
+            this.login = login;
+        }
+    }
 
-Usuario.prototype.verificarResultados = funtion() {
 
-}
-Usuario.prototype.getLogin = function () {
-    return this.login;
-}
+    verificarResultados() {
 
-Usuario.prototype.setLogin = function (login) {
-    this.login = login;
+    }
+    getLogin() {
+        return this.login;
+    }
+
+    setLogin(login) {
+        this.login = login;
+    }
 }

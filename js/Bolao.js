@@ -1,61 +1,65 @@
-var Bolão = function (apostadores, jogos, ranking, regras, regras_de_desempate) {
-    this.id = ""; // Resolver isso
-    this.apostadores = "";
-    this.jogos = jogos;
-    this.ranking = ranking;
-    if (regras === undefined && regras_de_desempate === undefined) {
-        this.regras = "";
-        this.regras_de_desempate = "";
-    } else {
-        this.regras = regras;
-        this.regras_de_desempates = regras_de_desempate;
+class Bolão {
+    /*#id;
+    #apostadores;
+    #jogos;                      FAZER GETTERS AND SETTERS DESSES GAROTOS
+    #ranking;*/
+    
+    constructor () {
+        if (regras === undefined && regras_de_desempate === undefined) {
+            this.regras = "";
+            this.regras_de_desempate = "";
+        } else {
+            this.regras = regras;
+            this.regras_de_desempates = regras_de_desempate;
+        }
     }
-}
 
-Bolão.prototype.calcularPremioeDefinirVencedor = function () {
+    calcularPremioeDefinirVencedor() {
 
-}
+    }
 
-Bolão.prototype.atualizarRanking = function () {
+    atualizarRanking() {
 
-}
+    }
 
-Bolão.prototype.getApostadores = function () {
-    return this.apostadores;
-}
+    getApostadores() {
+        return this.apostadores;
+    }
 
-Bolão.prototype.setApostadores = function (apostadores) {
-    this.apostadores = apostadores;
-}
+    setApostadores(apostadores) {
+        this.apostadores = apostadores;
+    }
 
-Bolão.prototype.getJogos = function () {
-    return this.jogos;
-}
+    getJogos() {
+        return this.jogos;
+    }
 
-Bolão.prototype.setJogos = function (jogos) {
-    this.jogos = jogos;
-}
+    setJogos(jogos) {
+        this.jogos = jogos;
+    }
 
-Bolão.prototype.getRanking = function () {
-    return this.ranking;
-}
+    getRanking() {
+        return this.ranking;
+    }
 
-Bolão.prototype.setRanking = function (ranking) {
-    this.ranking = ranking;
-}
+    setRanking(ranking) {
+        this.ranking = ranking;
+    }
 
-Bolão.prototype.getRegras = function () {
-    return this.regras;
-}
+    getRegras() {
+        return this.regras;
+    }
 
-Bolão.prototype.setRegras = function (regras) {
-    this.regras = regras;
-}
+    setRegras(regras) {
+        this.regras = regras;
+    }
 
-Bolão.prototype.getRegrasdeDesempate = function () {
-    return this.regras_de_desempate;
-}
+    getRegrasdeDesempate() {
+        return this.regras_de_desempate;
+    }
 
-Bolão.prototype.setRegrasDeDesempate = function () {
-    this.regras_de_desempate;
+    setRegrasDeDesempate() {
+        this.regras_de_desempate;
+    }
+
 }
