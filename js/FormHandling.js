@@ -1,17 +1,17 @@
 class FormHandling {
-    
-    constructor () {
+
+    constructor() {
         let first = false;
-        if(! FormHandling.instance) {
+        if (!FormHandling.instance) {
             first = true;
             console.log("Instanciou a primeira vez");
             FormHandling.instance = this;
         }
-        if(!first)
+        if (!first)
             console.log("Agora é só cópia parça");
         return FormHandling.instance;
     }
-    
+
     cadastrarUsuario() {
         var xmlhttp;
         if (window.XMLHttpRequest) {
@@ -29,6 +29,16 @@ class FormHandling {
 
         xmlhttp.open("GET", "../php/sessaoCadastro.php");
         xmlhttp.send();
+    }
+
+    deslogar() {
+        $.ajax({
+            url: "../php/deslogar.php"
+        }).done(function () {
+            console.log("Deslogou");
+            location.reload();
+        });
+
     }
 
     validarFormulario(e, form) {

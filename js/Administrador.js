@@ -1,10 +1,11 @@
 class Administrador extends Usuario {
-    constructor (login) {
+    constructor(login) {
         super(login);
     }
-    
-    criarBolao() {
 
+    criarBolao(bolaoelements) {
+        let games = bolaoelements.find(".modal-game");
+        
     }
 
     excluirBolao() {

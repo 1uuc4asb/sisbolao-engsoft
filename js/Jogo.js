@@ -15,4 +15,8 @@ class Jogo {
     setApostas() {
 
     }
+
+    notificarObservador() {
+
+    }
 }

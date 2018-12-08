@@ -1,11 +1,11 @@
-class Apostador {
-   /* #boloes = "";
-    #convites = "";
-    #jogos_apostados = "";        FAZER GETTERS AND SETTERS DESSES GAROTOS
-    #bolaoxpontacao = "";
-    */
-    
-    constructor (login) {
+class Apostador extends Usuario {
+    /* #boloes = "";
+     #convites = "";
+     #jogos_apostados = "";        FAZER GETTERS AND SETTERS DESSES GAROTOS
+     #bolaoxpontacao = "";
+     */
+
+    constructor(login) {
         super(login);
     }
 
