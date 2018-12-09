@@ -1,7 +1,7 @@
 <?php
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'xxxxxxxxxxx';
+    $db_password = 'x'; 
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -25,20 +25,20 @@
     else {
         $user = $query_result->fetch_assoc();
         if($user["Senha"] == $senha) {
+            setcookie('login',$login, 0 , '/');
             if($user["Tipo"] == "adm") {
                 setcookie('tipo','adm', 0 , '/');
             }
             else {
                 setcookie('tipo','usr', 0 , '/');
             }
-            setcookie('login',$login, 0 , '/');
+            $conn->close();
             header("Location:../index.php");
         }
         else {
             echo "Brother, teu usuário existe, mas você esqueceu sua senha!<br/>";
             echo "<a href=\"../index.php\"> Por enquando volte para o inicio </a>";
+            $conn->close();
         }
     }
-
-    $conn->close();
 ?>

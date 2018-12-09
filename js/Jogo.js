@@ -1,18 +1,22 @@
-function Jogo() {
-    var id;
-    var apostas;
-    var time1;
-    var time2;
-    var tempoLimite;
-    var resultado;
-    var montante;
-    var data;
+class Jogo {
+    /*#id;
+    #apostas;
+    #time1;
+    #time2;                   FAZER GETTERS AND SETTERS DESSES GAROTOS
+    #tempoLimite;
+    #resultado;
+    #montante;
+    #data;*/
 
-    var getApostas = function () {
+    getApostas() {
 
     }
 
-    var setApostas = function () {
+    setApostas() {
+
+    }
+
+    notificarObservador() {
 
     }
 }

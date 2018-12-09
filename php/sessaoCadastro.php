@@ -28,11 +28,19 @@
             <div class=\"container-form-btn\">
                 <div class=\"wrap-form-btn\">
                     <div class=\"form-bgbtn\"></div>
-                    <button class=\"form-btn\">
-                        Cadastrar-se
-                    </button>
+                        <button class=\"form-btn\">
+                            Cadastrar-se
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
+         <div id=\"refresh\" style=\"margin-top: 1em\" class=\"wrap-form-btn\">
+            <div class=\"form-bgbtn\"></div>
+                <button class=\"form-btn\">
+                    Voltar para página de login
+                </button>
+            </div>
+        </div>
     ";
 ?>

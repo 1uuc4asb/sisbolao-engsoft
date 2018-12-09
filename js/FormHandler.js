@@ -1,15 +1,15 @@
-class FormHandling {
+class FormHandler {
 
     constructor() {
         let first = false;
-        if (!FormHandling.instance) {
+        if (!FormHandler.instance) {
             first = true;
             console.log("Instanciou a primeira vez");
-            FormHandling.instance = this;
+            FormHandler.instance = this;
         }
         if (!first)
             console.log("Agora é só cópia parça");
-        return FormHandling.instance;
+        return FormHandler.instance;
     }
 
     cadastrarUsuario() {
@@ -40,8 +40,58 @@ class FormHandling {
         });
 
     }
+    
+    validarCriacaoBolao (gameInputs,scoreRulesInputs,tiebreakerRulesInputs, formHandler) {
+        var finalvalidation = true;
+        var validation;
+        for (let i = 0; i < gameInputs.length; i++) {
+            validation = this.simpleValidate(gameInputs[i]);
+            //console.log(validation);
+            if (validation == false) {
+                formHandler.showSimpleValidate(gameInputs[i]);
+                if(finalvalidation) {
+                    finalvalidation = false;
+                }
+            }
+        }
+        if(scoreRulesInputs != "") {
+            for (let i = 0; i < scoreRulesInputs.length; i++) {
+                validation = this.simpleValidate(scoreRulesInputs[i]);
+                //console.log(validation);
+                if (validation == false) {
+                    formHandler.showSimpleValidate(scoreRulesInputs[i]);
+                    if(finalvalidation) {
+                        finalvalidation = false;
+                    }
+                }
+            }
+        }
+        if(tiebreakerRulesInputs != "") {
+            for (let i = 0; i < tiebreakerRulesInputs.length; i++) {
+                validation = this.simpleValidate(tiebreakerRulesInputs[i]);
+                //console.log(validation);
+                if (validation == false) {
+                    formHandler.showSimpleValidate(tiebreakerRulesInputs[i]);
+                    if(finalvalidation) {
+                        finalvalidation = false;
+                    }
+                }
+            }
+        }
+    }
+    
+    simpleValidate (input) {
+        if ($(input).val().trim() == "") {
+            return false;
+        }
+    }
+    
+    showSimpleValidate(input) {
+        var thisAlert = $(input).parent();
+        $(thisAlert).addClass('alert-validate');
+    }
 
-    validarFormulario(e, form) {
+    validarFormularioLoginCadastro(e, form) {
         var formHandler = this;
         e.preventDefault();
         var check = true;
@@ -49,11 +99,11 @@ class FormHandling {
         console.log(input);
         console.log($("#login-input"));
         var verifylogin_flag = true;
-        for (var i = 0; i < input.length; i++) {
-            var validation = this.validate(input[i]);
+        for (let i = 0; i < input.length; i++) {
+            var validation = this.complexValidate(input[i]);
             //console.log(validation);
             if (validation.answer == false) {
-                formHandler.showValidate(input[i], validation.type);
+                formHandler.showComplexValidate(input[i], validation.type);
                 verifylogin_flag = false;
                 console.log(input[i].id == "input-login");
                 check = false;
@@ -91,7 +141,7 @@ class FormHandling {
                                         $("#" + form_id).submit();
                                         //alert("entrou aq :)");
                                     } else {
-                                        formHandler.showValidate($("#pass-input"), 5);
+                                        formHandler.showComplexValidate($("#pass-input"), 5);
                                         check = false;
                                     }
                                 }
@@ -102,7 +152,7 @@ class FormHandling {
                         } else {
                             //Mostrar em div que o login ta incorreto
                             console.log("!existe");
-                            formHandler.showValidate($("#login-input"), 4);
+                            formHandler.showComplexValidate($("#login-input"), 4);
                             check = false;
                         }
                     }
@@ -113,7 +163,7 @@ class FormHandling {
                         if (xmlhttp2.responseText == "exist") {
                             // div mostrar que usuário está em uso!
                             console.log(xmlhttp2.responseText);
-                            formHandler.showValidate($("#login-input2"), 3);
+                            formHandler.showComplexValidate($("#login-input2"), 3);
                             check = false;
                         } else {
                             $(document).off("submit");
@@ -132,7 +182,7 @@ class FormHandling {
         }
     }
 
-    validate(input) {
+    complexValidate(input) {
         var resposta = {
             answer: true,
             type: 1
@@ -150,7 +200,7 @@ class FormHandling {
 
     }
 
-    showValidate(input, type) {
+    showComplexValidate(input, type) {
         var thisAlert = $(input).parent();
         if (type == 2) { // Cadastro - Senhas não identicas
             thisAlert.attr("data-validate", "As senhas não são idênticas.");

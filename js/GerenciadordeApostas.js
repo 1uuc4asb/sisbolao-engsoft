@@ -1,8 +1,9 @@
-var Gerenciadordeapostas = function () {}
-Gerenciadordeapostas.prototype.adicionarpalpitenojogo = function () {
+class Gerenciadordeapostas {
+    adicionarpalpitenojogo() {
 
-}
+    }
 
-Gerenciadordeapostas.prototype.editarpalpitenojogo = function () {
+    editarpalpitenojogo() {
 
+    }
 }
