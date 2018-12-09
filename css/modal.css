@@ -55,7 +55,7 @@
     padding: 2px 16px;
 }
 
-.modal-body>button {
+#criar-bolao-modal, .modal-body>button {
     color: white;
     background: black;
     padding: 0.5em;
@@ -70,6 +70,14 @@
     border: solid;
     border-radius: 5px;
     padding: 1em;
+}
+
+#scorerules, #tiebreakerrules {
+    display: inline-block;
+    width: 70%;
+    border: solid;
+    border-radius: 5px;
+    padding: 4em;
 }
 
 /* Add Animation */
