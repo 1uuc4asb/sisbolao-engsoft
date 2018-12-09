@@ -68,7 +68,7 @@
                     <script src=\"js/Usuario.js\"></script>
                     <script src=\"js/Administrador.js\"></script>
                     <script src=\"js/Apostador.js\"></script>
-                    <script src=\"js/FormHandling.js\"></script>
+                    <script src=\"js/FormHandler.js\"></script>
                     <script src=\"js/index.js\"></script>
                 </head>
 ";

@@ -169,7 +169,7 @@
 											"top": 109,
 											"width": 183,
 											"height": 13,
-											"text": "+verificarResultados()",
+											"text": "+visualizarBolao()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -468,30 +468,13 @@
 											"height": 13,
 											"text": "+registrarResultadoJogo(id_bolao, id_jogo, resultado)",
 											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAFnhPPqPaMG/wA=",
-											"_parent": {
-												"$ref": "AAAAAAFmrLmpK4I4598="
-											},
-											"model": {
-												"$ref": "AAAAAAFnhPPp46MDe9w="
-											},
-											"font": "Arial;13;0",
-											"left": 381,
-											"top": 379,
-											"width": 309.6640625,
-											"height": 13,
-											"text": "+criarUsuário()",
-											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 376,
 									"top": 299,
 									"width": 319.6640625,
-									"height": 98
+									"height": 83
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -3812,7 +3795,7 @@
 											"font": "Arial;13;1",
 											"left": 917,
 											"top": 63,
-											"width": 310,
+											"width": 520.61572265625,
 											"height": 13,
 											"text": "Formhandler"
 										},
@@ -3848,7 +3831,7 @@
 									"font": "Arial;13;0",
 									"left": 912,
 									"top": 56,
-									"width": 320,
+									"width": 530.61572265625,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAFnTFQ8FVY9DC4="
@@ -3875,7 +3858,7 @@
 									"font": "Arial;13;0",
 									"left": 912,
 									"top": 81,
-									"width": 320,
+									"width": 530.61572265625,
 									"height": 10
 								},
 								{
@@ -3900,7 +3883,7 @@
 											"font": "Arial;13;0",
 											"left": 917,
 											"top": 96,
-											"width": 310,
+											"width": 520.61572265625,
 											"height": 13,
 											"text": "+cadastrarUsuario()",
 											"horizontalAlignment": 0
@@ -3917,9 +3900,26 @@
 											"font": "Arial;13;0",
 											"left": 917,
 											"top": 111,
-											"width": 310,
+											"width": 520.61572265625,
 											"height": 13,
-											"text": "+validarFormulario(e)",
+											"text": "+validarFormularioLoginCadastro(e)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFnkIOyp8BGDjU=",
+											"_parent": {
+												"$ref": "AAAAAAFnTFQ8FlZCJr0="
+											},
+											"model": {
+												"$ref": "AAAAAAFnkIOyN8A0hxA="
+											},
+											"font": "Arial;13;0",
+											"left": 917,
+											"top": 126,
+											"width": 520.61572265625,
+											"height": 13,
+											"text": "+validarCriacaoBolao(gameInputs, scoreRulesInputs, tiebreakerRulesInputs, formHandler)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3933,10 +3933,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 917,
-											"top": 126,
-											"width": 310,
+											"top": 141,
+											"width": 520.61572265625,
 											"height": 13,
-											"text": "+validate(input)",
+											"text": "+simpleValidate(input)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3950,18 +3950,52 @@
 											},
 											"font": "Arial;13;0",
 											"left": 917,
-											"top": 141,
-											"width": 310,
+											"top": 156,
+											"width": 520.61572265625,
 											"height": 13,
-											"text": "+showValidate(input, type)",
+											"text": "+showSimpleValidate(input)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFnkIRnE8QKnYs=",
+											"_parent": {
+												"$ref": "AAAAAAFnTFQ8FlZCJr0="
+											},
+											"model": {
+												"$ref": "AAAAAAFnkIRmx8P4mzQ="
+											},
+											"font": "Arial;13;0",
+											"left": 917,
+											"top": 171,
+											"width": 520.61572265625,
+											"height": 13,
+											"text": "+complexValidate(input)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAFnkIRqEMSXEVI=",
+											"_parent": {
+												"$ref": "AAAAAAFnTFQ8FlZCJr0="
+											},
+											"model": {
+												"$ref": "AAAAAAFnkIRpx8SFop8="
+											},
+											"font": "Arial;13;0",
+											"left": 917,
+											"top": 186,
+											"width": 520.61572265625,
+											"height": 13,
+											"text": "+showComplexValidate(input, type)",
 											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 912,
 									"top": 91,
-									"width": 320,
-									"height": 68
+									"width": 530.61572265625,
+									"height": 113
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -4000,7 +4034,7 @@
 							"containerChangeable": true,
 							"left": 912,
 							"top": 56,
-							"width": 320,
+							"width": 530.61572265625,
 							"height": 184,
 							"nameCompartment": {
 								"$ref": "AAAAAAFnTFQ8FFY8Ikw="
@@ -5348,7 +5382,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFmrLmZsIIGrPc="
 							},
-							"name": "verificarResultados"
+							"name": "visualizarBolao"
 						},
 						{
 							"_type": "UMLOperation",
@@ -5603,14 +5637,6 @@
 									"type": ""
 								}
 							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAFnhPPp46MDe9w=",
-							"_parent": {
-								"$ref": "AAAAAAFmrLmpKoIvarI="
-							},
-							"name": "criarUsuário"
 						}
 					]
 				},
@@ -6757,7 +6783,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFnTFQ8EVY5690="
 							},
-							"name": "validarFormulario",
+							"name": "validarFormularioLoginCadastro",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -6765,7 +6791,52 @@
 									"_parent": {
 										"$ref": "AAAAAAFnTGw9tFiq4/8="
 									},
-									"name": "e",
+									"name": "e"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFnkIOyN8A0hxA=",
+							"_parent": {
+								"$ref": "AAAAAAFnTFQ8EVY5690="
+							},
+							"name": "validarCriacaoBolao",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkIQZGsHS27k=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIOyN8A0hxA="
+									},
+									"name": "gameInputs",
+									"type": ""
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkIQZGsHTojg=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIOyN8A0hxA="
+									},
+									"name": "scoreRulesInputs",
+									"type": ""
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkIQZGsHU59E=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIOyN8A0hxA="
+									},
+									"name": "tiebreakerRulesInputs",
+									"type": ""
+								},
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkIQZGsHV2gU=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIOyN8A0hxA="
+									},
+									"name": "formHandler",
 									"type": ""
 								}
 							]
@@ -6776,7 +6847,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFnTFQ8EVY5690="
 							},
-							"name": "validate",
+							"name": "simpleValidate",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -6784,8 +6855,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFnTGxcEFllmuU="
 									},
-									"name": "input",
-									"type": ""
+									"name": "input"
 								}
 							]
 						},
@@ -6795,7 +6865,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFnTFQ8EVY5690="
 							},
-							"name": "showValidate",
+							"name": "showSimpleValidate",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -6803,14 +6873,51 @@
 									"_parent": {
 										"$ref": "AAAAAAFnTGyUW1r7pP8="
 									},
+									"name": "input"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFnkIRmx8P4mzQ=",
+							"_parent": {
+								"$ref": "AAAAAAFnTFQ8EVY5690="
+							},
+							"name": "complexValidate",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkISk6cVkfgY=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIRmx8P4mzQ="
+									},
+									"name": "input",
+									"type": ""
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAFnkIRpx8SFop8=",
+							"_parent": {
+								"$ref": "AAAAAAFnTFQ8EVY5690="
+							},
+							"name": "showComplexValidate",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAFnkITQUMYJr/U=",
+									"_parent": {
+										"$ref": "AAAAAAFnkIRpx8SFop8="
+									},
 									"name": "input",
 									"type": ""
 								},
 								{
 									"_type": "UMLParameter",
-									"_id": "AAAAAAFnTGy8Mlu4KGk=",
+									"_id": "AAAAAAFnkITQUMYKGaE=",
 									"_parent": {
-										"$ref": "AAAAAAFnTGyUW1r7pP8="
+										"$ref": "AAAAAAFnkIRpx8SFop8="
 									},
 									"name": "type",
 									"type": ""

@@ -2,7 +2,7 @@
     //Assim que iniciarmos a pagina index.php inciaremos este script.
 
     //Instanciar o objeto de form handling
-    var formHandling = new FormHandling();
+    var formHandler = new FormHandler();
 
     // https://www.w3schools.com/js/js_cookies.asp -- COMO VERIRFICAR OS COOKIES. VAMOS TRABALAHR COM ISSO.
     var cookies = document.cookie;
@@ -68,11 +68,56 @@
                                     "<button id=\"add-game-modal\"> Adicionar jogo </button>" +
                                     "<button id=\"remove-game-modal\"> Remover jogo </button>" +
                                     "<div id=\"created-games-model\">" + game + "</div>" +
-                                    "<button id=\"criar-bolao-modal\"> Criar Bolão </button>" +
+                                    "<div> Personalizar regras de pontuação do bolão? <input id=\"habilitar-scorerules\" type=\"checkbox\"/></div>" +
+                                    "<div id=\"scorerules\" style=\"display: none;\"> " +
+                                        "<h3> Quantidade de pontos ganhos ao: </h3><br/>" +
+                                        "acertar o placar: " +
+                                        "<div class=\"wrap-input100\" data-validate=\"*\">" +
+                                            "<input id=\"rightscore\" class=\"datetime\" type=\"number\" value=\"100\"/> Pontos" +
+                                        "</div>" +
+                                        "acertar apenas o vencedor: " +
+                                        "<div class=\"wrap-input100\" data-validate=\"*\">" +
+                                            "<input id=\"rigthwinner\" class=\"datetime\" type=\"number\" value=\"80\"/> Pontos" +
+                                        "</div>" +
+                                        "Acertar a quantidade de gols de um dos times: " +
+                                        "<div class=\"wrap-input100\" style=\"margin: auto;\" data-validate=\"*\">" +
+                                            "<input id=\"rigthwinner\" class=\"datetime\" type=\"number\" value=\"30\"/> Pontos" +
+                                        "</div>" +
+                                    "</div>" +
+                                    "<div>" + 
+                                        "Personalizar regras de desempate do bolão? <input id=\"habilitar-tiebreakerrules\" type=\"checkbox\"/>" + 
+                                    "</div>" +
+                                    "<div id=\"tiebreakerrules\" style=\"display: none;\">" +
+                                        "<h3>Em caso de dois jogadores obterem a mesma pontuação no bolão, qual será o critério de desempate?</h3>" +
+                                        "<select id=\"tiebreakselect\">" +
+                                            "<option value=\"random\"> Aleatoriamente </option>" +
+                                            "<option value=\"ordemalfabetica\"> Ordem Alfabética </option>" +
+                                            "<option value=\"nboloes\"> Número de bolões em que jogador está inserido </option>" +
+                                        "</select>" +
+                                    "</div>" +
+                                    "<div><button id=\"criar-bolao-modal\"> Criar Bolão </button></div>" +
                                 "</div>" +
                             "</div>";
         $("#myModal").html(modalcontent);
         $("#myModal").css("display", "block");
+    });
+    
+    $(document).on("change", "#habilitar-scorerules", function () {
+        if($("#scorerules").css("display") == "none") {
+            $("#scorerules").css("display", "inline-block");
+        }
+        else {
+            $("#scorerules").css("display", "none");
+        }
+    });
+    
+    $(document).on("change", "#habilitar-tiebreakerrules", function () {
+        if($("#tiebreakerrules").css("display") == "none") {
+            $("#tiebreakerrules").css("display", "inline-block");
+        }
+        else {
+            $("#tiebreakerrules").css("display", "none");
+        }
     });
 
     $(document).on("click", ".close", function () {
@@ -113,8 +158,10 @@
         }
     });
     
-    $(document).on("click", "#criar-bolao-modal", function () {
-        usuario.criarBolao();
+    $(document).on("click", "#criar-bolao-modal", function (e) {
+        var bolaoelements = $("." + e.currentTarget.offsetParent.className);
+        //console.log(bolaoelements.find("input"));
+        usuario.criarBolao(bolaoelements, formHandler);
     })
     
     /*================================================================== Criar bolão  ==================================================================*/
@@ -123,7 +170,7 @@
 
     //Realizar requisição http para chamar a página de cadastro
     $(document).on("click", "#cadastro", function () {
-        formHandling.cadastrarUsuario();
+        formHandler.cadastrarUsuario();
     });
 
     $(document).on("click", "#refresh", function () {
@@ -135,14 +182,15 @@
         [ Validate ]*/
 
     $(document).on("click", "#logout-btn", function () {
-        formHandling.deslogar();
+        formHandler.deslogar();
     });
 
     $(document).on('submit', '.validate-form', function (e) {
-        formHandling.validarFormulario(e, this);
+        formHandler.validarFormularioLoginCadastro(e, this);
     });
 
-    $(document).on("focus", '.validate-form .input100', function () {
+    $(document).on("focus", 'input, .validate-form .input100', function () {
+        console.log("foco");
         $(this).focus(function () {
             hideValidate(this);
         });
