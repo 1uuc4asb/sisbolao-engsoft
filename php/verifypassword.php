@@ -2,7 +2,7 @@
 
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'x';
+$db_password = 'Lucas@2301';
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -14,7 +14,7 @@
     $login = $_POST["login"];
     $senha = md5($_POST["senha"]);
   
-    $query = "SELECT * FROM Usuários WHERE BINARY Login = \"$login\"";
+    $query = "SELECT * FROM Usuarios WHERE BINARY Login = \"$login\"";
     $query_result = $conn->query($query);
     
     $user = $query_result->fetch_assoc();

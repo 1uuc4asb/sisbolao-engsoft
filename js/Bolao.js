@@ -1,17 +1,16 @@
-class Bolão {
+class Bolao {
     /*#id;
     #apostadores;
     #jogos;                      FAZER GETTERS AND SETTERS DESSES GAROTOS
     #ranking;*/
     
-    constructor () {
-        if (regras === undefined && regras_de_desempate === undefined) {
-            this.regras = "";
-            this.regras_de_desempate = "";
-        } else {
-            this.regras = regras;
-            this.regras_de_desempates = regras_de_desempate;
-        }
+    constructor (jogos,scoreRules,tiebreakerRules, administrador) {
+        this.apostadores = [];
+        this.ranking = [];
+        this.jogos = jogos;
+        this.scoreRules = scoreRules;
+        this.tiebreakerRules = tiebreakerRules;
+        this.Administrador = administrador;
     }
 
     calcularPremioeDefinirVencedor() {
@@ -20,6 +19,14 @@ class Bolão {
 
     atualizarRanking() {
 
+    }
+    
+    setID(id) {
+        this.id = id;
+    }
+    
+    getID() {
+        return this.id;
     }
 
     getApostadores() {
@@ -60,6 +67,10 @@ class Bolão {
 
     setRegrasDeDesempate() {
         this.regras_de_desempate;
+    }
+    
+    toString() {
+        return JSON.stringify(this);
     }
 
 }

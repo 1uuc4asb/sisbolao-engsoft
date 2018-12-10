@@ -2,7 +2,7 @@
 
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'x';
+    $db_password = 'Lucas@2301';
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -28,8 +28,8 @@
     else {
         echo $query;
         echo "<br/>";
-        $query = "INSERT INTO Usuários (Login,Senha,Tipo,Convites,Bolões,Apostas) VALUES " .
-            "(\"$login\",\"$senha\",\"usr\",\"{}\",\"{}\",\"{}\")";
+        $query = "INSERT INTO Usuarios (Login,Senha,Tipo,Convites,Boloes,Apostas) VALUES " .
+            "(\"$login\",\"$senha\",\"usr\",\"[]\",\"[]\",\"[]\")";
         if($conn->query($query) != TRUE) {
             echo "Retorna um erro ai";
         }

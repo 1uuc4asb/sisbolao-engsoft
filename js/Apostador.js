@@ -7,6 +7,7 @@ class Apostador extends Usuario {
 
     constructor(login) {
         super(login);
+        
     }
 
     analisarconvites() {

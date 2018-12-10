@@ -51,11 +51,11 @@
                         "</div>" +
                         "Data/Horário do jogo:" +
                         "<div class=\"wrap-input100\" data-validate=\"*\">" +
-                            "<input class=\"modal-game-team2 datetime\" type=\"datetime-local\"/>" +
+                            "<input class=\"modal-game-date datetime\" type=\"datetime-local\"/>" +
                         "</div>" +
                         "Tempo limite de apostas até... " +
                         "<div class=\"wrap-input100\" style=\"margin-bottom: auto;\" data-validate=\"*\">" +
-                            "<input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> dia(s) <input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> hora(s) e <input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> minuto(s)" +
+                            "<input value=\"0\" style=\"width: 3em\" class=\"modal-game-timelimitday datetime\" type=\"number\"/> dia(s) <input value=\"0\" style=\"width: 3em\" class=\"modal-game-timelimithour datetime\" type=\"number\"/> hora(s) e <input value=\"30\" style=\"width: 3em\" class=\"modal-game-timelimitminute datetime\" type=\"number\"/> minuto(s)" +
                         "</div>" +
                         "...antes do início do jogo" +
                     "</div>";
@@ -67,7 +67,7 @@
                                 "<div class=\"modal-body\" style=\"text-align: center;\">" +
                                     "<button id=\"add-game-modal\"> Adicionar jogo </button>" +
                                     "<button id=\"remove-game-modal\"> Remover jogo </button>" +
-                                    "<div id=\"created-games-model\">" + game + "</div>" +
+                                    "<div id=\"created-games-modal\">" + game + "</div>" +
                                     "<div> Personalizar regras de pontuação do bolão? <input id=\"habilitar-scorerules\" type=\"checkbox\"/></div>" +
                                     "<div id=\"scorerules\" style=\"display: none;\"> " +
                                         "<h3> Quantidade de pontos ganhos ao: </h3><br/>" +
@@ -77,11 +77,11 @@
                                         "</div>" +
                                         "acertar apenas o vencedor: " +
                                         "<div class=\"wrap-input100\" data-validate=\"*\">" +
-                                            "<input id=\"rigthwinner\" class=\"datetime\" type=\"number\" value=\"80\"/> Pontos" +
+                                            "<input id=\"rightwinner\" class=\"datetime\" type=\"number\" value=\"80\"/> Pontos" +
                                         "</div>" +
                                         "Acertar a quantidade de gols de um dos times: " +
                                         "<div class=\"wrap-input100\" style=\"margin: auto;\" data-validate=\"*\">" +
-                                            "<input id=\"rigthwinner\" class=\"datetime\" type=\"number\" value=\"30\"/> Pontos" +
+                                            "<input id=\"rightone\" class=\"datetime\" type=\"number\" value=\"30\"/> Pontos" +
                                         "</div>" +
                                     "</div>" +
                                     "<div>" + 
@@ -138,16 +138,17 @@
                         "</div>" +
                         "Data/Horário do jogo:" +
                         "<div class=\"wrap-input100\" data-validate=\"*\">" +
-                            "<input class=\"modal-game-team2 datetime\" type=\"datetime-local\"/>" +
+                            "<input class=\"modal-game-date datetime\" type=\"datetime-local\"/>" +
                         "</div>" +
                         "Tempo limite de apostas até... " +
                         "<div class=\"wrap-input100\" style=\"margin-bottom: auto;\" data-validate=\"*\">" +
-                            "<input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> dia(s) <input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> hora(s) e <input style=\"width: 3em\" class=\"modal-game-team2 datetime\" type=\"number\"/> minuto(s)" +
+                            "<input value=\"0\" style=\"width: 3em\" class=\"modal-game-timelimitday datetime\" type=\"number\"/> dia(s) <input value=\"0\" style=\"width: 3em\" class=\"modal-game-timelimithour datetime\" type=\"number\"/> hora(s) e <input value=\"30\" style=\"width: 3em\" class=\"modal-game-timelimitminute datetime\" type=\"number\"/> minuto(s)" +
                         "</div>" +
                         "...antes do início do jogo" +
                     "</div>";
-        let modalcontent = $("#created-games-model").html() + game;
-        $("#created-games-model").html(modalcontent);
+        //let modalcontent = $("#created-games-model").html() + game;
+        //$("#created-games-model").html(modalcontent);
+        $("#created-games-modal").append(game);
     });
     
     $(document).on("click", "#remove-game-modal", function () {

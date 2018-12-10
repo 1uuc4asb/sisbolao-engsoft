@@ -65,6 +65,8 @@
                     <script src=\"vendor/countdowntime/countdowntime.js\"></script>
                     <!--===============================================================================================-->
                     <script src=\"js/style.js\"></script>
+                    <script src=\"js/Bolao.js\"></script>
+                    <script src=\"js/Jogo.js\"></script>
                     <script src=\"js/Usuario.js\"></script>
                     <script src=\"js/Administrador.js\"></script>
                     <script src=\"js/Apostador.js\"></script>
