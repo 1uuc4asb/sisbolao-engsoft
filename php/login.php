@@ -1,7 +1,7 @@
 <?php
     $server = 'localhost';
     $db_user = 'root';
-   $db_password = 'Lucas@2301'; 
+    $db_password = ''; 
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -36,7 +36,7 @@
             header("Location:../index.php");
         }
         else {
-            echo "Brother, teu usuário existe, mas você esqueceu sua senha!<br/>";
+            echo "Brother, teu usuario existe, mas você esqueceu sua senha!<br/>";
             echo "<a href=\"../index.php\"> Por enquando volte para o inicio </a>";
             $conn->close();
         }
