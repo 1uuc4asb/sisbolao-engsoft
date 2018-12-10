@@ -55,12 +55,16 @@
     padding: 2px 16px;
 }
 
-#criar-bolao-modal, .modal-body>button {
+#criar-bolao-modal, .modal-body>button, .modal-body>*>button {
     color: white;
     background: black;
     padding: 0.5em;
     margin: 0.5em;
     border-radius: 5px;
+}
+
+.modal-body>select , .modal-body>*>select {
+    width: 20em;
 }
 
 .modal-game {

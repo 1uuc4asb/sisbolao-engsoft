@@ -7,7 +7,10 @@ class Apostador extends Usuario {
 
     constructor(login) {
         super(login);
-        
+        this.boloes = [];
+        this.convites = [];
+        this.jogos_apostados = [];
+        this.bolaoxpontuacao = [];
     }
 
     analisarconvites() {

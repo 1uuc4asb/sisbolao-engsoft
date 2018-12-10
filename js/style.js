@@ -24,7 +24,15 @@
     });
 
 
-
+    $(document).on("mouseenter",".bolao-list-adm", function () {
+        //console.log("maoe");
+        $(this).find("img").css("filter", "invert(100%)");
+    });
+    
+    $(document).on("mouseleave",".bolao-list-adm", function () {
+        //console.log("maoe");
+        $(this).find("img").css("filter", "");
+    });
 
     /*==================================================================
     [ Show password ]*/

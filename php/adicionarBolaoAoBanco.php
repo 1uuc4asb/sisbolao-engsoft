@@ -1,7 +1,7 @@
 <?php
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'Lucas@2301';
+    $db_password = 'x';
 
     $bolao = json_decode($_POST["bolao"]);
 

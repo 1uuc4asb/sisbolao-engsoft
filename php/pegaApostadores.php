@@ -10,8 +10,13 @@
         die("Connection failed: " . $conn->connect_error);
     }
     
-    $query = "SELECT * FROM Boloes";
+    $query = "SELECT * FROM Usuarios WHERE tipo = \"usr\"";
     $query_result = $conn->query($query);
+    
+    $apostadores = array();
+    while($row = $query_result->fetch_assoc()) {
+        array_push($apostadores, $row["Login"]);
+    }
     $conn->close();
-    echo $query_result->num_rows + 1;
+    echo json_encode($apostadores);
 ?>

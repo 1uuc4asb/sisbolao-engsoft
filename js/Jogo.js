@@ -15,7 +15,7 @@ class Jogo {
         this.tempoLimite = tempoLimite;
         this.data = data;
         this.apostas = [];
-        this.montante = "";
+        this.montante = 0;
         this.resultado = "";
     }
 
@@ -25,6 +25,11 @@ class Jogo {
 
     setApostas(apostas) {
         this.apostas = apostas;
+        this.atualizarMontante ();
+    }
+    
+    atualizarMontante () {
+        
     }
     
     toString() {

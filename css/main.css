@@ -71,9 +71,22 @@ ul {
 }
 
 li {
-    float: right;
     padding: 14px 16px;
     border-radius: 10px;
+}
+
+.menu-li {
+    float: right;
+}
+
+.bolao-list-adm, .bolao-list-usr {
+    border: solid;
+    margin: 1em;
+}
+.boloes-icon {
+    height: 2em;
+    float: right;
+    margin-top: -0.3em;
 }
 
 .datetime {
