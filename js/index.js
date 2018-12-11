@@ -21,7 +21,7 @@
         console.log(cookies);
         let login = cookies.substr(cookies.indexOf("login=") + 6, cookies.indexOf(";") - (cookies.indexOf("login=") + 6));
         console.log("O login da criatura é:", login);
-        if (cookies.search("adm")) {
+        if (cookies.search("adm") != -1) {
             console.log("É adm");
             //var usuario1 = new Usuario(login);
             var usuario = new Administrador(login);
@@ -172,12 +172,44 @@
         usuario.visualizarBolao(this.id);
     });
     
-    $(document).on("click", "#rmv-bolao", function () {
-        
-    }
+    $(document).on("click", ".rmv-bolao", function () {
+        if(confirm("Você deseja mesmo exluir este bolão? Todos os dados serão perdidos permanentemente.")) {
+            usuario.excluirBolao(this.id);
+        }
+    });
+    
+    $(document).on("click", "#invite-usr-btn", function () {
+        var nickApostador = $("#invite-usr").val();
+        if(confirm("Você deseja convidar o usuário " + nickApostador + "?")) {
+            usuario.convidarApostadorParaBolao($(".rmv-bolao").attr("id"),nickApostador);
+        }
+    });
+    
+    $(document).on("click", ".see-invites", function () {
+        //console.log(this.id);
+        //console.log(usuario);
+        usuario.analisarConvites(this.id);
+    });
+    
+    $(document).on("click", ".accept-invite", function () {
+        //console.log(this.id);
+        //console.log(usuario);
+        usuario.analisarConvites(this.id);
+    });
+    
+    $(document).on("click", ".refuse-invite", function () {
+        //console.log(this.id);
+        //console.log(usuario);
+        usuario.analisarConvites(this.id);
+    });
+    
     /*================================================================== Visualizar Bolão  ==================================================================*/
         
     /*================================================================== Janela geral ==================================================================*/
+    
+    $(document).on("click","#voltarpinicial-cadastro", function(){
+        window.location = "../index.php";
+    });
 
     //Realizar requisição http para chamar a página de cadastro
     $(document).on("click", "#cadastro", function () {

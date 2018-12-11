@@ -13,8 +13,37 @@ class Apostador extends Usuario {
         this.bolaoxpontuacao = [];
     }
 
-    analisarconvites() {
-
+    analisarConvites(apostador) {
+        console.log("Apostador:", apostador);
+        $.ajax ({
+            url: "../php/visualizarConvites.php",
+            method: "POST",
+            data: { apostador: apostador }
+        }).done( function (answer) {
+            if(answer[0] == "E") {
+                alert(answer);
+            }
+            else {
+                var convitesArr = JSON.parse(answer);
+                var convites = "";
+                for(let i=0; i< convitesArr.length; i++) {
+                    convites += "<li id=\"" + convitesArr[i]  + "\" class=\"invite\" style=\"border: solid;\"> Você foi convidado para entrar no Bolão " + convitesArr[i] + "! Deseja entrar? (Você pode apenas observar se quiser!)<br/> <button id=\"" + convitesArr[i] + "\" class=\"accept-invite\"> Aceitar </button> <button id=\"" + convitesArr[i] + "\" class=\"refuse-invite\"> Recusar </button>";
+                }
+                let modalcontent = "<div class=\"modal-content\" style=\"left: 5em;\">" +
+                                        "<div class=\"modal-header\">" +
+                                            "<span class=\"close\">&times;</span>" +
+                                            "<h2> Meus convites </h2>" +
+                                        "</div>" +
+                                        "<div class=\"modal-body\" style=\"text-align: center;\">" +
+                                            "<ul id=\"usr-invites\">" +
+                                                convites +
+                                            "</ul>" +
+                                        "</div>" +
+                                    "</div>";
+                    $("#myModal").html(modalcontent);
+                    $("#myModal").css("display", "block");
+            }
+        });
     }
 
     responderconvite(id_bolao) {

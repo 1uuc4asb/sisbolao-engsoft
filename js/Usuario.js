@@ -35,10 +35,13 @@ class Usuario {
             for(let i=0;i<apostadoresArr.length; i++) {
                 selectContent += "<option value=\"" + apostadoresArr[i] + "\">" + apostadoresArr[i] + "</option>";
             }
-            
             var gamesContent = "";
+            let data = new Date();
+            let dataUtc = Date.UTC(data.getYear(),data.getMonth(),data.getDay(),data.getHours(),data.getMinutes());
+            let dataFinal = dataUtc/1000 | 0;
             for(let i=0;i<bolaoObj.jogos.length; i++) {
                 gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
+                                    (dataFinal>bolaoObj.jogos[i].data? (bolaoObj.jogos[i].resultado==""? "<button style=\"float: right;\" id=\"" + bolaoObj.jogos[i].id  + "\" class\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
                                     "<div style=\"font-size: 3.5em; margin: 1em;\">" +
                                         bolaoObj.jogos[i].time1 + (bolaoObj.jogos[i].resultado==""? " X " : bolaoObj.jogos[i].resultado) + bolaoObj.jogos[i].time2 +
                                     "</div>" +
@@ -81,7 +84,7 @@ class Usuario {
                                     "<h2>Bolão " + bolaoObj.id + "</h2>" +
                                 "</div>" +
                                 "<div class=\"modal-body\" style=\"text-align: center;\">" +
-                                    "<button style=\"float: right;\" id=\"rmv-bolao\"> Excluir bolão </button>" +
+                                    "<button style=\"float: right;\" id=\"" + bolaoObj.id + "\" class=\"rmv-bolao\"> Excluir bolão </button>" +
                                     "<div style=\"text-align: left; margin: 1em;\">Número de participantes: " + bolaoObj.apostadores.length +
                                     "<br/><select id=\"rmv-usr\">" +
                                         participantesSelect +
@@ -110,7 +113,7 @@ class Usuario {
                                         "<h3 style=\"margin: 1em;\"> Ranking </h3>" +
                                         "<ol>" +
                                             ranking +
-                                        "</ol>"
+                                        "</ol>" +
                                     "</div>" +
                                 "</div>" +
                             "</div>";

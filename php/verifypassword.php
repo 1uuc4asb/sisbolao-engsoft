@@ -2,7 +2,7 @@
 
     $server = 'localhost';
     $db_user = 'root';
-$db_password = 'x';
+    $db_password = 'x';
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -19,11 +19,11 @@ $db_password = 'x';
     
     $user = $query_result->fetch_assoc();
     if($user["Senha"] == $senha) {
+        $conn->close();
         echo "correct";
     }
     else {
+        $conn->close();
         echo "incorrect";
     }
-
-    $conn->close();
 ?>

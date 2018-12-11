@@ -78,6 +78,7 @@ class FormHandler {
                 }
             }
         }
+        return finalvalidation;
     }
     
     simpleValidate (input) {

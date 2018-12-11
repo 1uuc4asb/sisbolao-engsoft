@@ -33,6 +33,18 @@
         //console.log("maoe");
         $(this).find("img").css("filter", "");
     });
+    
+    $(document).on("mouseenter",".invite", function () {
+        //console.log("maoe");
+        $(this).find("button").css("background", "white");
+        $(this).find("button").css("color", "black");
+        
+    });
+    
+    $(document).on("mouseleave",".invite", function () {
+        $(this).find("button").css("background", "black");
+        $(this).find("button").css("color", "white");
+    });
 
     /*==================================================================
     [ Show password ]*/

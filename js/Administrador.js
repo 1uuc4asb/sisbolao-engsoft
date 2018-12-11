@@ -23,7 +23,8 @@ class Administrador extends Usuario {
         console.log(tiebreakerRulesInput);
         dadosvalidos = formHandler.validarCriacaoBolao(games.find("input"), scoreRulesInputs, tiebreakerRulesInput, formHandler);
         if(!dadosvalidos) {
-            //return;
+            console.log("Dados invalidos");
+            return;
         }
         let quantidade_de_jogos = games.length;
         var vetor_de_objjogo = [];
@@ -99,11 +100,39 @@ class Administrador extends Usuario {
     }
 
     excluirBolao(id) {
-
+        console.log("id recebido:",id);
+        $.ajax({
+            url: "../php/excluirBolao.php",
+            method: "POST",
+            data: { id: id }
+        }).done( function (answer) {
+           if(answer == "success") {
+               console.log("#" + id);
+               $("#myModal").css("display", "none");
+               $("#" + id).remove();
+           }
+            else {
+                alert(answer);
+                $("#myModal").css("display", "none");
+            }
+        });
     }
 
-    convidarAPostadorParaBolao() {
-
+    convidarApostadorParaBolao(bolao, apostador) {
+        console.log("Id do bolao:", bolao);
+        console.log("Nick do apostador:", apostador);
+        $.ajax({
+            url: "../php/adicionarApostadorParaBolao.php",
+            method: "POST",
+            data: { bolao: bolao, apostador: apostador }
+        }).done(function (answer) {
+            if(answer == "success") {
+                alert("O convite foi enviado com sucesso!");
+            }
+            else {
+                alert(answer);
+            }
+        });
     }
 
     registrarResultadoJogo() {
