@@ -13,7 +13,7 @@
         $query = "INSERT INTO Usuarios (Login,Senha,Tipo,Convites,Boloes,Apostas) VALUES " .
             "(\"$login\",\"$senha\",\"usr\",\"[]\",\"[]\",\"[]\")";
   
-        if($conn->query($query) == FALSE) {
+        if($conn->query($query) === FALSE) {
             $error = $conn->error;
             $conn->close();
             echo $query;

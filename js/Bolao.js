@@ -68,13 +68,6 @@ class Bolao {
     setRegrasDeDesempate() {
         this.regras_de_desempate;
     }
-    getAdministrador() {
-        return this.Administrador;
-    }
-
-    setAdministrador(Administrador) {
-        this.Administrador = Administrador;
-    }
     
     toString() {
         return JSON.stringify(this);

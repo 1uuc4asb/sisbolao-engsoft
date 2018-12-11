@@ -122,12 +122,13 @@ class Administrador extends Usuario {
         console.log("Id do bolao:", bolao);
         console.log("Nick do apostador:", apostador);
         $.ajax({
-            url: "../php/adicionarApostadorParaBolao.php",
+            url: "../php/convidarApostadorParaBolao.php",
             method: "POST",
             data: { bolao: bolao, apostador: apostador }
         }).done(function (answer) {
             if(answer == "success") {
                 alert("O convite foi enviado com sucesso!");
+                //alert(answer);
             }
             else {
                 alert(answer);

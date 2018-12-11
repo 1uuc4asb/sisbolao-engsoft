@@ -185,25 +185,25 @@
         }
     });
     
-    $(document).on("click", ".see-invites", function () {
+    /*================================================================== Visualizar Bolão  ==================================================================*/
+   
+    /*================================================================== Visualizar convites  ==================================================================*/
+    
+     $(document).on("click", ".see-invites", function () {
         //console.log(this.id);
         //console.log(usuario);
         usuario.analisarConvites(this.id);
     });
     
     $(document).on("click", ".accept-invite", function () {
-        //console.log(this.id);
-        //console.log(usuario);
-        usuario.analisarConvites(this.id);
+        usuario.responderconvite(this.id, "accept");
     });
     
     $(document).on("click", ".refuse-invite", function () {
-        //console.log(this.id);
-        //console.log(usuario);
-        usuario.analisarConvites(this.id);
+        usuario.responderconvite(this.id, "refuse");
     });
     
-    /*================================================================== Visualizar Bolão  ==================================================================*/
+    /*================================================================== Visualizar convites  ==================================================================*/
         
     /*================================================================== Janela geral ==================================================================*/
     

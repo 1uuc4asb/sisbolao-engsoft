@@ -33,7 +33,15 @@ class Usuario {
             
             var selectContent = "";
             for(let i=0;i<apostadoresArr.length; i++) {
-                selectContent += "<option value=\"" + apostadoresArr[i] + "\">" + apostadoresArr[i] + "</option>";
+                let adiciona = true;
+                for(let j=0; j<bolaoObj.apostadores.length; j++) {
+                    if(apostadoresArr[i] == bolaoObj.apostadores[j]) {
+                        adiciona = false;
+                    }
+                }
+                if(adiciona) {
+                    selectContent += "<option value=\"" + apostadoresArr[i] + "\">" + apostadoresArr[i] + "</option>";  
+                }
             }
             var gamesContent = "";
             let data = new Date();

@@ -1,10 +1,9 @@
 <?php
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'Lucas@2301';
+    $db_password = 'x';
 
-    $bolaoId = $_POST["bolao"];
-    $apostador = $_POST["apostador"];
+    $bolao = json_decode($_POST["bolao"]);
 
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
 
@@ -13,17 +12,90 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $convite = json_encode(array($bolaoId), JSON_UNESCAPED_UNICODE );
-    
-    $query = "UPDATE Usuarios SET convites = '$convite' WHERE BINARY Login = \"$apostador\"";
-    $query_result = $conn->query($query);
+    $login = $_POST["apostador"];
+    $bolao = $_POST["bolao"];
+    $answer = $_POST["answer"];
 
-    if($query_result != TRUE) {
-        $error = $conn->error;
-        $conn->close();
-        echo "Erro: " . $error;
+    if($answer == "accept") {
+        $query = "SELECT apostadores FROM Boloes WHERE id = '$bolao'";
+        $query_result = $conn->query($query);
+        if($query_result === FALSE) {
+            echo "Erro: " . $conn->error;
+            $conn-close();
+            exit;
+        }
+        else {
+            if($query_result->num_rows <= 0) {
+                echo "!exist";
+                exit;
+            }
+            $row = $query_result->fetch_assoc();
+            $apostadores = json_decode($row["apostadores"]);
+            array_push($apostadores, $login);
+            //echo json_encode($apostadores);
+            $query = "UPDATE Boloes SET apostadores = '" . json_encode($apostadores) . "' WHERE id = '$bolao'";
+            $query_result = $conn->query($query);
+            if($query_result === FALSE) {
+                echo "Erro: " . $conn->error;
+                $conn-close();
+                exit;
+            }
+            else {
+                $query = "SELECT Convites,Boloes FROM Usuarios WHERE Login = '$login'";
+                $query_result = $conn->query($query);
+                if($query_result === FALSE) {
+                    echo "Erro: " . $conn->error;
+                    $conn-close();
+                    exit;
+                }
+                else {
+                    $row = $query_result->fetch_assoc();
+                    $convites = json_decode($row["Convites"]);
+                    $conviteIndex = array_search($bolao, $convites);
+                    array_splice($convites, $conviteIndex, 1);
+                    $boloes = json_decode($row["Boloes"]);
+                    array_push($boloes, $bolao);
+                    //var_dump (json_encode($convites) . " " . json_encode($boloes));
+                    $query = "UPDATE Usuarios SET Convites = '" . json_encode($convites) . "',Boloes = '" . json_encode($boloes) . "' WHERE Login = '$login'";
+                    $query_result = $conn->query($query);
+                    if($query_result === FALSE) {
+                        echo "Erro: " . $conn->error;
+                        $conn-close();
+                        exit;
+                    }
+                    else {
+                        echo "success";
+                    }
+                }
+            }
+        }
+        
     }
     else {
-        echo "success";
+        $query = "SELECT convites FROM Usuarios WHERE Login = '$login'";
+        $query_result = $conn->query($query);
+        if($query_result === FALSE) {
+            echo "Erro: " . $conn->error;
+            $conn-close();
+            exit;
+        }
+        else {
+            $row = $query_result->fetch_assoc();
+            $convites = json_decode($row["convites"]);
+            $conviteIndex = array_search($bolao, $convites);
+            array_splice($convites, $conviteIndex, 1);
+            //echo json_encode($convites);
+            $query = "UPDATE Usuarios SET convites = '" . json_encode($convites) . "' WHERE Login = '$login'";
+            $query_result = $conn->query($query);
+            if($query_result === FALSE) {
+                echo "Erro: " . $conn->error;
+                $conn-close();
+                exit;
+            }
+            else {
+                echo "success";
+            }
+        }
+        
     }
 ?>
