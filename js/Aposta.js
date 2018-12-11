@@ -4,20 +4,18 @@ class Aposta {
         this.dono = dono;
         this.valor = valor;
     }
-
     getValor() {
-
+        return this.valor;
     }
 
-    setValor() {
-
+    setValor(valor) {
+        this.valor = valor;
     }
-
     getDono() {
-
+        return this.dono;
     }
 
-    setDono() {
-
+    setDono(dono) {
+        this.dono = dono;
     }
 }
