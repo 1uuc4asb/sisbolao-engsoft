@@ -12,7 +12,32 @@ class Apostador extends Usuario {
         this.jogos_apostados = [];
         this.bolaoxpontuacao = [];
     }
-
+    
+    getBoloes() {
+        return this.boloes;
+    }
+     setBoloes(boloes) {
+        this.boloes = boloes;
+    }
+    getConvites() {
+        return this.convites;
+    }
+     setConvites(convites) {
+        this.convites = convites;
+    }
+    getJogos_apostados() {
+        return this.jogos_apostados;
+    }
+     setJogos_apostados(jogos_apostados) {
+        this.jogos_apostados = jogos_apostados;
+    }
+    getBolaoxpontuacao() {
+        return this.bolaoxpontuacao;
+    }
+     setBolaoxpontuacao(bolaoxpontuacao) {
+        this.bolaoxpontuacao = bolaoxpontuacao;
+    }
+    
     analisarConvites() {
         
         console.log("Apostador:", this.getLogin());

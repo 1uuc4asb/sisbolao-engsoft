@@ -16,6 +16,13 @@ class Bolao {
     calcularPremioeDefinirVencedor() {
 
     }
+    
+    getAdministrador() {
+        return this.Administrador;
+    }
+     setAdministrador(Administrador) {
+        this.Administrador = Administrador;
+    }
 
     atualizarRanking() {
 
@@ -54,19 +61,19 @@ class Bolao {
     }
 
     getRegras() {
-        return this.regras;
+        return this.scoreRules;
     }
 
-    setRegras(regras) {
-        this.regras = regras;
+    setRegras(scoreRules) {
+        this.scoreRules = scoreRules;
     }
 
     getRegrasdeDesempate() {
-        return this.regras_de_desempate;
+        return this.tiebreakerRules;
     }
 
-    setRegrasDeDesempate() {
-        this.regras_de_desempate;
+    setRegrasDeDesempate(tiebreakerRules) {
+        this.tiebreakerRules = tiebreakerRules;
     }
     
     toString() {

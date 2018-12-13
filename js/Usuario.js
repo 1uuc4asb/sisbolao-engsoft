@@ -10,9 +10,8 @@ class Usuario {
 
 
     visualizarBolao(id) {
-        if(this instanceof Administrador) {
-            console.log("Sou um administrador e cliquei no bolão " + id);
-            var bolaoObj; // É indiretamente uma instancia de Bolao
+        var bolaoObj; // É indiretamente uma instancia de Bolao
+            var bolao; // Será a instancia de bolao
             $.ajax({
                 url: "../php/pegarBolaoById.php",
                 method: "POST",
@@ -20,8 +19,20 @@ class Usuario {
                 data: {id: id}
             }).done(function (bolaoJSON) {
                 bolaoObj = JSON.parse(bolaoJSON);
-                console.log(bolaoObj);
+                let jogos = [];
+                for(let i=0;i<bolaoObj.jogos.length;i++) {
+                    let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
+                    jogos.push(jogo);
+                }
+                //console.log(bolaoObj);
+                let adm = new Administrador(bolaoObj.administrador.login);
+                bolao = new Bolao(jogos,bolaoObj.regras,bolaoObj.regra_de_desempate,adm);
+                bolao.setID(bolaoObj.id);
+                bolao.setApostadores(bolaoObj.apostadores);
+                //console.log("Bolao:", bolao);
             });
+        if(this instanceof Administrador) {
+            console.log("Sou um administrador e cliquei no bolão " + id);
             var apostadoresArr;
             $.ajax({
                 url: "../php/pegaApostadores.php",
@@ -34,8 +45,8 @@ class Usuario {
             var selectContent = "";
             for(let i=0;i<apostadoresArr.length; i++) {
                 let adiciona = true;
-                for(let j=0; j<bolaoObj.apostadores.length; j++) {
-                    if(apostadoresArr[i] == bolaoObj.apostadores[j]) {
+                for(let j=0; j<bolao.getApostadores().length; j++) {
+                    if(apostadoresArr[i] == bolao.getApostadores()[j]) {
                         adiciona = false;
                     }
                 }
@@ -49,31 +60,31 @@ class Usuario {
             let dataFinal = dataUtc/1000 | 0;
             for(let i=0;i<bolaoObj.jogos.length; i++) {
                 gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
-                                    (dataFinal>bolaoObj.jogos[i].data? (bolaoObj.jogos[i].resultado==""? "<button style=\"float: right;\" id=\"" + bolaoObj.jogos[i].id  + "\" class\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
+                                    (dataFinal>bolao.getJogos()[i].data? (bolao.getJogos()[i].getResultado()==""? "<button style=\"float: right;\" id=\"" + bolao.getJogos()[i].getId()  + "\" class\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
                                     "<div style=\"font-size: 3.5em; margin: 1em;\">" +
-                                        bolaoObj.jogos[i].time1 + (bolaoObj.jogos[i].resultado==""? " X " : bolaoObj.jogos[i].resultado) + bolaoObj.jogos[i].time2 +
+                                        bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : bolao.getJogos()[i].getResultado()) + bolao.getJogos()[i].getTime2() +
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
-                                        "<b>Data do jogo</b>: " + new Date(bolaoObj.jogos[i].data).toLocaleDateString() + " " +new Date(bolaoObj.jogos[i].data).getHours() + ":" + new Date(bolaoObj.jogos[i].data).getMinutes() + ", <b>Número de apostas</b>: " + bolaoObj.jogos[i].apostas.length + ", <b>Montante</b>: " + bolaoObj.jogos[i].montante + " R$" + 
+                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData()).toLocaleDateString() + " " +new Date(bolao.getJogos()[i].getData()).getHours() + ":" + new Date(bolao.getJogos()[i].getData()).getMinutes() + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
-                                        "<b>Tempo limite de aposta</b>: " + bolaoObj.jogos[i].tempoLimite[0] + " dia " + bolaoObj.jogos[i].tempoLimite[1] + " horas " + bolaoObj.jogos[i].tempoLimite[2] + " minutos antes do jogo..." +
+                                        "<b>Tempo limite de aposta</b>: " + bolao.getJogos()[i].getTempoLimite()[0] + " dia " + bolao.getJogos()[i].getTempoLimite()[1] + " horas " + bolao.getJogos()[i].getTempoLimite()[2] + " minutos antes do jogo..." +
                                     "</div>" +
                                "</div>";
             }
             
             var participantesSelect = "";
-            for(let i=0;i<bolaoObj.apostadores.length; i++) {
-                participantesSelect += "<option value=\"" + bolaoObj.apostadores[i] + "\">" + bolaoObj.apostadores[i] + "</option>";
+            for(let i=0;i<bolao.getApostadores().length; i++) {
+                participantesSelect += "<option value=\"" + bolao.getApostadores()[i] + "\">" + bolao.getApostadores()[i] + "</option>";
             }
             
             var ranking = "";
-            for(let i=0;i<bolaoObj.ranking.length; i++) {
-                ranking += "<li> " + bolaoObj.ranking[i] + "</li>";
+            for(let i=0;i<bolao.getRanking().length; i++) {
+                ranking += "<li> " + bolao.getRanking()[i] + "</li>";
             }
             
             var desempate = "";
-            switch (bolaoObj.regra_de_desempate) {
+            switch (bolao.getRegrasdeDesempate()) {
                 case "random":
                     desempate = "Aleatoriamente";
                     break;
@@ -89,11 +100,11 @@ class Usuario {
             let modalcontent = "<div class=\"modal-content\" style=\"left: 5em;\">" +
                                 "<div class=\"modal-header\">" +
                                     "<span class=\"close\">&times;</span>" +
-                                    "<h2>Bolão " + bolaoObj.id + "</h2>" +
+                                    "<h2>Bolão " + bolao.getID() + "</h2>" +
                                 "</div>" +
                                 "<div class=\"modal-body\" style=\"text-align: center;\">" +
-                                    "<button style=\"float: right;\" id=\"" + bolaoObj.id + "\" class=\"rmv-bolao\"> Excluir bolão </button>" +
-                                    "<div style=\"text-align: left; margin: 1em;\">Número de participantes: " + bolaoObj.apostadores.length +
+                                    "<button style=\"float: right;\" id=\"" + bolao.getID() + "\" class=\"rmv-bolao\"> Excluir bolão </button>" +
+                                    "<div style=\"text-align: left; margin: 1em;\">Número de participantes: " + bolao.getApostadores().length + "</div>" +
                                     "<br/><select id=\"rmv-usr\">" +
                                         participantesSelect +
                                     "</select>" +
@@ -109,9 +120,9 @@ class Usuario {
                                     "<div>" +
                                         "<h3 style=\"margin: 1em;\"> Regras do Bolão </h3>" +
                                         "Quantidade de pontos ganhos ao:<br/><div style=\"width: 25em;display: inline-block;text-align: left;\">" +
-                                            "<ul style=\"list-style: disc;\"> <li><b>acertar o placar</b>: " + bolaoObj.regras[0] + "</li>" +
-                                            "<li><b>acertar apenas o vencedor</b>: " + bolaoObj.regras[1] + "</li>" +
-                                            "<li><b>acertar a quantidade de gols de um time</b>: " + bolaoObj.regras[2] + "</li></ul>" +
+                                            "<ul style=\"list-style: disc;\"> <li><b>acertar o placar</b>: " + bolao.getRegras()[0] + "</li>" +
+                                            "<li><b>acertar apenas o vencedor</b>: " + bolao.getRegras()[1] + "</li>" +
+                                            "<li><b>acertar a quantidade de gols de um time</b>: " + bolao.getRegras()[2] + "</li></ul>" +
                                     "</div>" +
                                     "<div>" +
                                         "<h3 style=\"margin: 1em;\"> Regra de desempate </h3>" +
@@ -130,6 +141,75 @@ class Usuario {
         }
         else {
             console.log("Sou um apostador e cliquei no bolão " + id);
+            var gamesContent = "";
+            let data = new Date();
+            let dataUtc = Date.UTC(data.getYear(),data.getMonth(),data.getDay(),data.getHours(),data.getMinutes());
+            let dataFinal = dataUtc/1000 | 0;
+            for(let i=0;i<bolaoObj.jogos.length; i++) {
+                gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
+                                    "<div style=\"font-size: 3.5em; margin: 1em;\">" +
+                                        bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : bolao.getJogos()[i].getResultado()) + bolao.getJogos()[i].getTime2() +
+                                    "</div>" +
+                                    "<div style=\"font-size: 1.5em; margin: 1em;\">" +
+                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData()).toLocaleDateString() + " " +new Date(bolao.getJogos()[i].getData()).getHours() + ":" + new Date(bolao.getJogos()[i].getData()).getMinutes() + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
+                                    "</div>" +
+                                    "<div style=\"font-size: 1.5em; margin: 1em;\">" +
+                                        "<b>Tempo limite de aposta</b>: " + bolao.getJogos()[i].getTempoLimite()[0] + " dia " + bolao.getJogos()[i].getTempoLimite()[1] + " horas " + bolao.getJogos()[i].getTempoLimite()[2] + " minutos antes do jogo..." +
+                                    "</div>" +
+                               "</div>";
+            }
+            
+            var ranking = "";
+            for(let i=0;i<bolao.getRanking().length; i++) {
+                ranking += "<li> " + bolao.getRanking()[i] + "</li>";
+            }
+            
+            var desempate = "";
+            switch (bolao.getRegrasdeDesempate()) {
+                case "random":
+                    desempate = "Aleatoriamente";
+                    break;
+                case "ordemalfabetica":
+                    desempate = "Ordem alfabética";
+                    break;
+                case "nboloes":
+                    desempate = "Número de bolões em que jogador está inserido";
+                    break;
+            }
+            
+            
+            let modalcontent = "<div class=\"modal-content\" style=\"left: 5em;\">" +
+                                "<div class=\"modal-header\">" +
+                                    "<span class=\"close\">&times;</span>" +
+                                    "<h2>Bolão " + bolao.getID() + "</h2>" +
+                                "</div>" +
+                                "<div class=\"modal-body\" style=\"text-align: center;\">" +
+                                    "<div style=\"text-align: left; margin: 1em;\">Número de participantes: " + bolao.getApostadores().length + "</div>" +
+                                    "<div>" +
+                                        "<h3 style=\"margin: 1em;\"> Jogos </h3>" +
+                                        gamesContent +
+                                    "</div>" +
+                                    "<div>" +
+                                        "<h3 style=\"margin: 1em;\"> Regras do Bolão </h3>" +
+                                        "Quantidade de pontos ganhos ao:<br/><div style=\"width: 25em;display: inline-block;text-align: left;\">" +
+                                            "<ul style=\"list-style: disc;\"> <li><b>acertar o placar</b>: " + bolao.getRegras()[0] + "</li>" +
+                                            "<li><b>acertar apenas o vencedor</b>: " + bolao.getRegras()[1] + "</li>" +
+                                            "<li><b>acertar a quantidade de gols de um time</b>: " + bolao.getRegras()[2] + "</li></ul>" +
+                                    "</div>" +
+                                    "<div>" +
+                                        "<h3 style=\"margin: 1em;\"> Regra de desempate </h3>" +
+                                            desempate +
+                                    "</div>" +
+                                    "<div>" +
+                                        "<h3 style=\"margin: 1em;\"> Ranking </h3>" +
+                                        "<ol>" +
+                                            ranking +
+                                        "</ol>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>";
+            $("#myModal").html(modalcontent);
+            $("#myModal").css("display", "block");
         }
     }
     getLogin() {
