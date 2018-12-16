@@ -87,14 +87,14 @@ class Administrador extends Usuario {
             data: { bolao: bolaoObj.toString() }
         }).done( function (answer) {
             //alert(answer);
-            bolaoObj.setID(answer);
+            /*bolaoObj.setID(answer);
             var nApostasTotal = 0, montanteTotal = 0;
             for(let i= 0; i< bolaoObj.getJogos().length; i++) {
                 nApostasTotal += bolaoObj.getJogos()[i].apostas.length;
                 montanteTotal += bolaoObj.getJogos()[i].montante;
             }
             var novoBolaoLi = "<li id=\"" + bolaoObj.getID() + "\" class=\"bolao-list-adm clickable\"> Bolão " + bolaoObj.getID() + " - Quantidade de apostadores: " + bolaoObj.getApostadores().length + " / Quantidade de jogos: " + bolaoObj.getJogos().length + " / Quantidade total de apostas: " + nApostasTotal + " / Montante total do Bolão: " + montanteTotal +  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
-            $("#adm-bolao-list").append(novoBolaoLi);
+            $("#adm-bolao-list").append(novoBolaoLi);*/
             alert("O bolão foi criado com sucesso!");
             $("#myModal").css("display", "none");
         })
@@ -110,11 +110,11 @@ class Administrador extends Usuario {
             data: { id: id }
         }).done( function (answer) {
            if(answer == "success") {
-               console.log("#" + id);
+               alert("O bolão foi excluído com sucesso!");
                $("#myModal").css("display", "none");
-               $("#" + id).remove();
            }
             else {
+                console.log(answer);
                 alert(answer);
                 $("#myModal").css("display", "none");
             }

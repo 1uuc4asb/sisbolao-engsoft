@@ -63,6 +63,7 @@ class Apostador extends Usuario {
     responderconvite(id_bolao, answer) {
         console.log("Bolao:", id_bolao);
         console.log("Resposta do convite:", answer);
+        var thisUsuario = this;
         $.ajax({
             url: "../php/adicionarApostadorParaBolao.php",
             method: "POST",
@@ -76,21 +77,6 @@ class Apostador extends Usuario {
                     $("#n-invites").css("display","none");
                 }
                 if(answer == "accept") {
-                    $.ajax({
-                        url: "../php/pegarBolaoById.php",
-                        method: "POST",
-                        async: false,
-                        data: {id: id_bolao}
-                    }).done(function (bolaoJSON) {
-                        let bolaoObj = JSON.parse(bolaoJSON);
-                        var nApostasTotal = 0, montanteTotal = 0;
-                        for(let i= 0; i< bolaoObj.jogos.length; i++) {
-                            nApostasTotal += bolaoObj.jogos[i].apostas.length;
-                            montanteTotal += bolaoObj.jogos[i].montante;
-                        }
-                        var novoBolaoLi = "<li id=\"" + bolaoObj.id + "\" class=\"bolao-list-adm clickable\"> Bolão " + bolaoObj.id + " - Quantidade de apostadores: " + bolaoObj.apostadores.length + " / Quantidade de jogos: " + bolaoObj.jogos.length + " / Quantidade total de apostas: " + nApostasTotal + " / Montante total do Bolão: " + montanteTotal +  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
-                        $("#usr-bolao-list").append(novoBolaoLi);
-                    });
                     alert("Você agora faz parte do bolão!");
                 }
                 else {
@@ -98,7 +84,13 @@ class Apostador extends Usuario {
                 }
             }
             else {
-                alert(answerPHP);
+                if(answerPHP == "!exist") {
+                    alert("O bolão não existe mais...");
+                }
+                else {
+                    alert(answerPHP);
+                }
+                thisUsuario.analisarConvites();
             }
         });
     }

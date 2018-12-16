@@ -36,7 +36,7 @@
             $bolaoObj->regra_de_desempate = json_decode($row["regra_de_desempate"]);
             $bolaoObj->administrador = json_decode($row["administrador"]);
             $conn->close();
-            echo json_encode($bolaoObj);
+            echo json_encode($bolaoObj, JSON_UNESCAPED_UNICODE );
         }
     }
 ?>

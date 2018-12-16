@@ -9,6 +9,73 @@ class Jogo {
         this.apostas = [];
         this.montante = 0;
         this.resultado = "";
+        this.observadores = new ListaDeObservadores();
+    }
+    
+    setListadeObservadores (lista) {
+        this.observadores = lista;
+    }
+    
+    getListaDeObservadores () {
+        return this.observadores;
+    }
+    
+    adicionarObservador (observador) {
+        this.observadores.adicionar(observador);
+    }
+    
+    removerObservadorPorIndice (indice) {
+        this.observadores.remover(indice);
+    }
+    
+    notificarObservadores() {
+        var tamanhoDaLista = this.observadores.contar();
+        let observadoresObj = [];
+        for(let i=0;i<tamanhoDaLista;i++) {
+            let id_bolao = this.observadores.pegar(i);
+            let bolaoObj; // É indiretamente uma instancia de Bolao
+            let bolao; // Será a instancia de bolao
+                $.ajax({
+                    url: "../php/pegarBolaoById.php",
+                    method: "POST",
+                    async: false,
+                    data: {id: id}
+                }).done(function (bolaoJSON) {
+                    try {
+                        bolaoObj = JSON.parse(bolaoJSON);
+                    } catch (e) {
+                        if(bolaoJSON[0] == "E") {
+                            alert(bolaoJSON);
+                        }
+                    }
+                    console.log(bolaoJSON);
+                    console.log(bolaoObj);
+                    let jogos = [];
+                    for(let i=0;i<bolaoObj.jogos.length;i++) {
+                        let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
+                        let apostas = [];
+                        for(var j=0;j<bolaoObj.jogos[i].apostas.length; j++) {
+                            let aposta = new Aposta(bolaoObj.jogos[i].apostas[j].palpite,bolaoObj.jogos[i].apostas[j].dono, bolaoObj.jogos[i].apostas[j].valor);
+                            apostas.push(aposta);
+                        }
+                        jogo.setApostas(apostas);
+                        jogo.setMontante(bolaoObj.jogos[i].montante);
+                        jogo.setResultado(bolaoObj.jogos[i].resultado);
+                        jogo.setListadeObservadores(bolaoObj.jogos[i].observadores);
+                        jogos.push(jogo);
+                    }
+                    //console.log(bolaoObj);
+                    let adm = new Administrador(bolaoObj.administrador.login);
+                    bolao = new Bolao(jogos,bolaoObj.regras,bolaoObj.regra_de_desempate,adm);
+                    bolao.setID(bolaoObj.id);
+                    bolao.setApostadores(bolaoObj.apostadores);
+                    //console.log("Bolao:", bolao);
+                });
+            observadoresObj.push(bolao);
+        }
+        for(let i=0;i<observadoresObj.length; i++) {
+            observadoresObj[i].atualizarRanking();
+        }
     }
 
     getApostas() {
@@ -28,7 +95,7 @@ class Jogo {
     getApostas() {
         return this.apostas;
     }
-     setApostas(apostas) {
+    setApostas(apostas) {
         this.apostas = apostas;
     }
     getTime1() {
@@ -54,7 +121,7 @@ class Jogo {
     }
      setResultado(resultado) {
         this.resultado = resultado;
-        this.notificarObservador();
+        this.notificarObservadores();
     }
     getMontante() {
         return this.montante;

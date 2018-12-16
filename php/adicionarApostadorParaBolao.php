@@ -26,14 +26,37 @@
         }
         else {
             if($query_result->num_rows <= 0) {
-                echo "!exist";
+                $query = "SELECT convites FROM Usuarios WHERE Login = '$login'";
+                $query_result = $conn->query($query);
+                if($query_result === FALSE) {
+                    echo "Erro: " . $conn->error;
+                    $conn-close();
+                    exit;
+                }
+                else {
+                    $row = $query_result->fetch_assoc();
+                    $convites = json_decode($row["convites"]);
+                    $conviteIndex = array_search($bolao, $convites);
+                    array_splice($convites, $conviteIndex, 1);
+                    //echo json_encode($convites);
+                    $query = "UPDATE Usuarios SET convites = '" . json_encode($convites, JSON_UNESCAPED_UNICODE ) . "' WHERE Login = '$login'";
+                    $query_result = $conn->query($query);
+                    if($query_result === FALSE) {
+                        echo "Erro: " . $conn->error;
+                        $conn-close();
+                        exit;
+                    }
+                    else {
+                        echo "!exist";
+                    }
+                }
                 exit;
             }
             $row = $query_result->fetch_assoc();
             $apostadores = json_decode($row["apostadores"]);
             array_push($apostadores, $login);
             //echo json_encode($apostadores);
-            $query = "UPDATE Boloes SET apostadores = '" . json_encode($apostadores) . "' WHERE id = '$bolao'";
+            $query = "UPDATE Boloes SET apostadores = '" . json_encode($apostadores, JSON_UNESCAPED_UNICODE ) . "' WHERE id = '$bolao'";
             $query_result = $conn->query($query);
             if($query_result === FALSE) {
                 echo "Erro: " . $conn->error;
@@ -56,7 +79,7 @@
                     $boloes = json_decode($row["Boloes"]);
                     array_push($boloes, $bolao);
                     //var_dump (json_encode($convites) . " " . json_encode($boloes));
-                    $query = "UPDATE Usuarios SET Convites = '" . json_encode($convites) . "',Boloes = '" . json_encode($boloes) . "' WHERE Login = '$login'";
+                    $query = "UPDATE Usuarios SET Convites = '" . json_encode($convites, JSON_UNESCAPED_UNICODE ) . "',Boloes = '" . json_encode($boloes, JSON_UNESCAPED_UNICODE ) . "' WHERE Login = '$login'";
                     $query_result = $conn->query($query);
                     if($query_result === FALSE) {
                         echo "Erro: " . $conn->error;
@@ -85,7 +108,7 @@
             $conviteIndex = array_search($bolao, $convites);
             array_splice($convites, $conviteIndex, 1);
             //echo json_encode($convites);
-            $query = "UPDATE Usuarios SET convites = '" . json_encode($convites) . "' WHERE Login = '$login'";
+            $query = "UPDATE Usuarios SET convites = '" . json_encode($convites, JSON_UNESCAPED_UNICODE ) . "' WHERE Login = '$login'";
             $query_result = $conn->query($query);
             if($query_result === FALSE) {
                 echo "Erro: " . $conn->error;

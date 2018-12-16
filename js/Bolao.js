@@ -17,17 +17,17 @@ class Bolao {
 
     }
     
+    atualizarRanking(apostas,resultado) {
+        
+    }
+    
     getAdministrador() {
         return this.Administrador;
     }
      setAdministrador(Administrador) {
         this.Administrador = Administrador;
     }
-
-    atualizarRanking() {
-
-    }
-    
+  
     setID(id) {
         this.id = id;
     }

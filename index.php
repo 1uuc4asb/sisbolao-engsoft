@@ -1,7 +1,7 @@
 <?php
     $server = 'localhost';
     $db_user = 'root';
-    $db_password = 'x';
+    $db_password = 'Lucas@2301';
     $conn = new mysqli($server,$db_user,$db_password, "Bolao");
     // Check connection
     if ($conn->connect_error) {
@@ -74,6 +74,7 @@
                     <!--===============================================================================================-->
                     <script src=\"js/style.js\"></script>
                     <script src=\"js/Bolao.js\"></script>
+                    <script src=\"js/ListaDeObservadores.js\"></script>
                     <script src=\"js/Jogo.js\"></script>
                     <script src=\"js/Usuario.js\"></script>
                     <script src=\"js/Administrador.js\"></script>

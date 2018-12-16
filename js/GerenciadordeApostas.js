@@ -23,6 +23,7 @@ class Gerenciadordeapostas {
                 jogo.setApostas(apostas);
                 jogo.setMontante(bolaoObj.jogos[i].montante);
                 jogo.setResultado(bolaoObj.jogos[i].resultado);
+                jogo.setListadeObservadores(bolaoObj.jogos[i].observadores);
                 jogos.push(jogo);
             }
             //console.log(bolaoObj);

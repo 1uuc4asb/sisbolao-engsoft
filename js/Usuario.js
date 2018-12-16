@@ -11,14 +11,32 @@ class Usuario {
 
     visualizarBolao(id) {
         var bolaoObj; // É indiretamente uma instancia de Bolao
-            var bolao; // Será a instancia de bolao
+        var bolao; // Será a instancia de bolao
+        var thisUsuario = this;
             $.ajax({
                 url: "../php/pegarBolaoById.php",
                 method: "POST",
                 async: false,
                 data: {id: id}
             }).done(function (bolaoJSON) {
-                bolaoObj = JSON.parse(bolaoJSON);
+                try {
+                    bolaoObj = JSON.parse(bolaoJSON);
+                } catch (e) {
+                    if(bolaoJSON[0] == "E") {
+                        alert(bolaoJSON);
+                    }
+                    else {
+                        alert("O bolão não existe mais...");
+                        $.ajax({
+                            url: "../php/mostrarTabelaUsr.php",
+                            method: "POST",
+                            data: { login: thisUsuario.getLogin()}
+                        }).done(function (msg) {
+                            $(".container-login100").html(msg);
+                            //alert("Atualizou boy");
+                        });
+                    }
+                }
                 console.log(bolaoJSON);
                 console.log(bolaoObj);
                 let jogos = [];
@@ -32,6 +50,7 @@ class Usuario {
                     jogo.setApostas(apostas);
                     jogo.setMontante(bolaoObj.jogos[i].montante);
                     jogo.setResultado(bolaoObj.jogos[i].resultado);
+                    jogo.setListadeObservadores(bolaoObj.jogos[i].observadores);
                     jogos.push(jogo);
                 }
                 //console.log(bolaoObj);
@@ -72,7 +91,7 @@ class Usuario {
             for(let i=0;i<bolao.getJogos().length; i++) {
                 //console.log("DataJogo", bolao.getJogos()[i].data);
                 gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
-                                    (dataFinal>bolao.getJogos()[i].data? (bolao.getJogos()[i].getResultado()==""? "<button style=\"float: right;\" id=\"" + bolao.getJogos()[i].getId()  + "\" class\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
+                                    (dataFinal>bolao.getJogos()[i].data? (bolao.getJogos()[i].getResultado()==""? "<button style=\"float: right;\" id=\"" + bolao.getJogos()[i].getId()  + "\" class=\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
                                     "<div class=\"teams\" style=\"font-size: 3.5em; margin: 1em;\">" +
                                         bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : bolao.getJogos()[i].getResultado()) + bolao.getJogos()[i].getTime2() +
                                     "</div>" +

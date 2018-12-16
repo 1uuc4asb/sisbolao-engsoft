@@ -18,5 +18,5 @@
         array_push($apostadores, $row["Login"]);
     }
     $conn->close();
-    echo json_encode($apostadores);
+    echo json_encode($apostadores, JSON_UNESCAPED_UNICODE );
 ?>

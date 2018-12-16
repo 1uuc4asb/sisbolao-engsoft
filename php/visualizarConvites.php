@@ -20,7 +20,7 @@
     }
     else {
         $row = $query_result->fetch_assoc();
-        $convites = json_encode(json_decode($row["convites"]));
+        $convites = json_encode(json_decode($row["convites"]), JSON_UNESCAPED_UNICODE );
         $conn->close();
         echo $convites;
     }

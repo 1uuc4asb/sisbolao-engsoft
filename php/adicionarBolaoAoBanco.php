@@ -22,20 +22,50 @@
     //var_dump($bolao);
     $query = "INSERT INTO Boloes (apostadores,jogos,ranking,regras,regra_de_desempate,administrador) VALUES ('$apostadores','$jogos','$ranking','$scoreRules','$tiebreakerRules','$administrador')";
     $query_result = $conn->query($query);
-    
-    if($query_result != TRUE) {
-        $erro = $conn->error;
+
+    if($query_result === FALSE) {
+        echo "Erro: $conn->error";
         $conn->close();
-        echo "Erro: " . $erro;
+        exit;
     }
     else {
         $query = "SELECT id FROM Boloes";
         $query_result = $conn->query($query);
-        $id = "";
-        while($row = $query_result->fetch_assoc()) {
-            $id = $row["id"];
+        if($query_result === FALSE) {
+            echo "Erro: $conn->error";
+            $conn->close();
+            exit;
+        }
+        else {
+            while($row = $query_result->fetch_assoc()) {
+                $id = $row["id"];
+            }
+            $query = "SELECT * FROM Boloes WHERE id = \"$id\"";
+            $query_result = $conn->query($query);
+            if($query_result === FALSE) {
+                echo "Erro: $conn->error";
+                $conn->close();
+                exit;
+            }
+            else {
+                $row = $query_result->fetch_assoc();
+                $jogosArr = json_decode($row["jogos"]);
+                foreach($jogosArr as $jogo) {
+                    array_push($jogo->observadores->lista, $id);
+                }
+                $query = "UPDATE Boloes SET jogos = '" . json_encode($jogosArr , JSON_UNESCAPED_UNICODE ) . "' WHERE id = \"$id\"";
+                $query_result = $conn->query($query);
+                if($query_result === FALSE) {
+                    echo "Erro: $conn->error";
+                    $conn->close();
+                    exit;
+                }
+                else {
+                    echo "success";
+                }
+            }
+            echo $id;
         }
         $conn->close();
-        echo $id;
     }
 ?>

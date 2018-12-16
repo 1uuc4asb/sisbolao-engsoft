@@ -30,7 +30,7 @@
             $apostadorObj->boloes = json_decode($row["Boloes"]);
             $apostadorObj->apostas = json_decode($row["Apostas"]);
             $conn->close();
-            echo json_encode($apostadorObj);
+            echo json_encode($apostadorObj, JSON_UNESCAPED_UNICODE );
         }
     }
 ?>

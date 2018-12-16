@@ -38,6 +38,23 @@
             console.log("É adm");
             //var usuario1 = new Usuario(login);
             var usuario = new Administrador(login);
+            let mudou = false;
+            setInterval(function () {
+                if($("#myModal").css("display") != "none") {
+                    mudou = true;
+                }
+                if(mudou && $("#myModal").css("display") == "none") {
+                    mudou = false;
+                    $.ajax({
+                        url: "../php/mostrarTabelaAdm.php",
+                        method: "POST",
+                        data: { login: usuario.getLogin()}
+                    }).done(function (msg) {
+                        $(".container-login100").html(msg);
+                        //alert("Atualizou boy");
+                    });
+                }
+            });
             //console.log(usuario.getLogin());
             //console.log(login);
         } else {
@@ -52,6 +69,23 @@
                 var usrObj = JSON.parse(msg);
                 usuario.setBoloes(usrObj.boloes);
                 usuario.setApostas(usrObj.apostas);
+            });
+            let mudou = false;
+            setInterval(function () {
+                if($("#myModal").css("display") != "none") {
+                    mudou = true;
+                }
+                if(mudou && $("#myModal").css("display") == "none") {
+                    mudou = false;
+                    $.ajax({
+                        url: "../php/mostrarTabelaUsr.php",
+                        method: "POST",
+                        data: { login: usuario.getLogin()}
+                    }).done(function (msg) {
+                        $(".container-login100").html(msg);
+                        //alert("Atualizou boy");
+                    });
+                }
             });
         }
     }
@@ -210,6 +244,12 @@
         }
     });
     
+    $(document).on("click", ".register-game-result", function () {
+        var game_id = this.id;
+        var bolao_id = $($(this.parentNode.parentNode.parentNode).find(".rmv-bolao")).attr("id");
+        console.log("game  e bolao", game_id, bolao_id);
+    });
+    
     $(document).on("click", ".inserir-palp", function () {
         console.log($(this.parentNode).find(".teams").html());
         var times = $(this.parentNode).find(".teams").html();
@@ -236,7 +276,7 @@
                                 alert("Você deve digitar um número inteiro!");
                             }
                             else {
-                                var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team2 + " gol(s)?");
+                                var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fará " + gol_team2 + " gol(s)?");
                                 if(confirmaçãoTime2) {
                                     console.log("O palpite do otário é:", gol_team1 + "X" + gol_team2);
                                     var valor = prompt("Quanto dinheiro você irá apostar?");

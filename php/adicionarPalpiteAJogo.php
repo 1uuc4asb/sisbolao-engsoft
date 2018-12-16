@@ -42,7 +42,7 @@
             $apostaObj->aposta = $aposta;
             array_push($apostasArr,$apostaObj);
             //var_dump($apostasArr);
-            $query = "UPDATE Usuarios SET Apostas = '" . json_encode($apostasArr) . "' WHERE Login = '" . $aposta->dono . "'";
+            $query = "UPDATE Usuarios SET Apostas = '" . json_encode($apostasArr, JSON_UNESCAPED_UNICODE ) . "' WHERE Login = '" . $aposta->dono . "'";
             //echo $query;
             $query_result = $conn->query($query);
             if($query_result === FALSE) {
@@ -55,7 +55,7 @@
                 $bolao->jogos[$jogo->id - 1]->montante += $aposta->valor;
                 array_push($bolao->jogos[$jogo->id - 1]->apostas,$aposta);
                 //var_dump($bolao);
-                $query = "UPDATE Boloes SET jogos = '" . json_encode($bolao->jogos) . "' WHERE id = '" . $bolao->id . "'";
+                $query = "UPDATE Boloes SET jogos = '" . json_encode($bolao->jogos, JSON_UNESCAPED_UNICODE ) . "' WHERE id = '" . $bolao->id . "'";
                 //echo $query;
                 $query_result = $conn->query($query);
                 if($query_result === FALSE) {
