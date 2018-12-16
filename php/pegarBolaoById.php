@@ -14,23 +14,29 @@
     
     $query = "SELECT * FROM Boloes WHERE id = \"$id\"";
     $query_result = $conn->query($query);
-    
-    if($query_result->num_rows <= 0) {
+
+    if($query_result === FALSE) {
+        echo "Erro: $conn->error";
         $conn->close();
-        echo "Deu merda";
+        exit;
     }
     else {
-        $row = $query_result->fetch_assoc();
-        $bolaoObj->id = json_decode($row["id"]);
-        $bolaoObj->apostadores = json_decode($row["apostadores"]);
-        $bolaoObj->jogos = json_decode($row["jogos"]);
-        $bolaoObj->ranking = json_decode($row["ranking"]);
-        $bolaoObj->regras = json_decode($row["regras"]);
-        $bolaoObj->regra_de_desempate = json_decode($row["regra_de_desempate"]);
-        $bolaoObj->administrador = json_decode($row["administrador"]);
-        $conn->close();
-        echo json_encode($bolaoObj);
+        if($query_result->num_rows <= 0) {
+            echo "Não existe bolão com o id: $id";
+            $conn->close();
+            exit;
+        }
+        else {
+            $row = $query_result->fetch_assoc();
+            $bolaoObj->id = json_decode($row["id"]);
+            $bolaoObj->apostadores = json_decode($row["apostadores"]);
+            $bolaoObj->jogos = json_decode($row["jogos"]);
+            $bolaoObj->ranking = json_decode($row["ranking"]);
+            $bolaoObj->regras = json_decode($row["regras"]);
+            $bolaoObj->regra_de_desempate = json_decode($row["regra_de_desempate"]);
+            $bolaoObj->administrador = json_decode($row["administrador"]);
+            $conn->close();
+            echo json_encode($bolaoObj);
+        }
     }
-    
-    
 ?>

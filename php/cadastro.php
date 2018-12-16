@@ -94,7 +94,7 @@
             <body>
             <div class=\"limiter\">
                     <div class=\"container-login100\">
-                        <div class=\"wrap\">
+                        <div class=\"wrap\" style=\"text-align: center;\">
                                 <span class=\"form-title p-b-26\">
                                     Sistema de Bolão
                                 </span>

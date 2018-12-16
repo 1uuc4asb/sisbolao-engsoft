@@ -1,16 +1,10 @@
 class Apostador extends Usuario {
-    /* #boloes = "";
-     #convites = "";
-     #jogos_apostados = "";        FAZER GETTERS AND SETTERS DESSES GAROTOS
-     #bolaoxpontacao = "";
-     */
-
+    
     constructor(login) {
         super(login);
         this.boloes = [];
         this.convites = [];
-        this.jogos_apostados = [];
-        this.bolaoxpontuacao = [];
+        this.apostas = [];
     }
     
     getBoloes() {
@@ -25,17 +19,11 @@ class Apostador extends Usuario {
      setConvites(convites) {
         this.convites = convites;
     }
-    getJogos_apostados() {
-        return this.jogos_apostados;
+    getApostas() {
+        return this.apostas;
     }
-     setJogos_apostados(jogos_apostados) {
-        this.jogos_apostados = jogos_apostados;
-    }
-    getBolaoxpontuacao() {
-        return this.bolaoxpontuacao;
-    }
-     setBolaoxpontuacao(bolaoxpontuacao) {
-        this.bolaoxpontuacao = bolaoxpontuacao;
+     setApostas(apostas) {
+        this.apostas = apostas;
     }
     
     analisarConvites() {
@@ -113,22 +101,19 @@ class Apostador extends Usuario {
                 alert(answerPHP);
             }
         });
-        // Tirar convite da lista
     }
 
-    visualizarjogos() {
-
+    inserirpalpite(id_bolao,id_jogo, aposta) {
+        console.log(id_bolao, id_jogo, aposta);
+        var gerenciador = new Gerenciadordeapostas();
+        var thisApostador = this;
+        gerenciador.adicionarpalpitenojogo(function (resposta) {
+            alert(resposta);
+            thisApostador.visualizarBolao(id_bolao);
+        }, id_bolao,id_jogo, aposta);
     }
 
-    inserirpalpite(id_jogo, valor) {
-
-    }
-
-    editarpalpite(id_jogo, valor) {
-
-    }
-
-    verificarranking(id_bolao) {
+    editarpalpite(id_bolao,id_jogo, aposta) {
 
     }
 }

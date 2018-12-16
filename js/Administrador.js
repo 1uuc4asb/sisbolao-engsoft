@@ -40,8 +40,11 @@ class Administrador extends Usuario {
             let time1 = $("." + game.className).find($(".modal-game-team1")[index-1]).val();
             let time2 = $("." + game.className).find($(".modal-game-team2")[index-1]).val();
             let data = new Date($("." + game.className).find($(".modal-game-date")[index-1]).val());
-            let dataUtc = Date.UTC(data.getYear(),data.getMonth(),data.getDay(),data.getHours(),data.getMinutes());
+            console.log("Data do jogo carai1: ", data);
+            console.log("Data do jogo carai1: ", data.getFullYear() + "/"  + data.getMonth() + "/" + data.getDate() + " " + data.getHours() + ":" + data.getMinutes());
+            let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(),data.getMinutes());
             let dataFinal = dataUtc/1000 | 0;
+            console.log("Data do jogo carai: ", dataFinal);
             //data.setTime( data.getTime() - new Date().getTimezoneOffset()*60*1000 );
             //let tempolimite = "[" + $("." + game.className).find($(".modal-game-timelimitday")[index-1]).val() + "," + $("." + game.className).find($(".modal-game-timelimithour")[index-1]).val() + "," + $("." + game.className).find($(".modal-game-timelimitminute")[index-1]).val() + "]";
             let tempoLimite = [];

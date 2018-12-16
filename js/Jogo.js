@@ -1,12 +1,4 @@
 class Jogo {
-    /*#id;
-    #apostas;
-    #time1;
-    #time2;                   FAZER GETTERS AND SETTERS DESSES GAROTOS
-    #tempoLimite;
-    #resultado;
-    #montante;
-    #data;*/
     
     constructor (id,time1,time2,tempoLimite,data) {
         this.id = id;
@@ -25,7 +17,6 @@ class Jogo {
 
     setApostas(apostas) {
         this.apostas = apostas;
-        this.atualizarMontante ();
     }
     
     getId() {
@@ -63,6 +54,7 @@ class Jogo {
     }
      setResultado(resultado) {
         this.resultado = resultado;
+        this.notificarObservador();
     }
     getMontante() {
         return this.montante;
@@ -77,12 +69,7 @@ class Jogo {
         this.data = data;
     }
     
-    atualizarMontante () {
-        
-    }
-    
     toString() {
-        //return "{" + "id: " + this.id + ",time1: \"" + this.time1 + "\",time2: \"" + this.time2 + "\",tempoLimite: " + this.tempoLimite + ",apostas: " + JSON.stringify(this.apostas) + ",montante: " + (this.montante==""? "null" : this.montante) + ", resultado: " + (this.resultado==""? "null" : this.resultado) + "}";
         return JSON.stringify(this);
     }
 

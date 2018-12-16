@@ -5,6 +5,18 @@
     var formHandler = new FormHandler();
 
     // https://www.w3schools.com/js/js_cookies.asp -- COMO VERIRFICAR OS COOKIES. VAMOS TRABALAHR COM ISSO.
+    
+    /*================================================================== Cookies ==================================================================*/
+    
+    $(document).on("click", "#cookie-permission", function () {
+        $.ajax({
+            url: "../php/cookie-permission.php"
+        }).done(function () {
+            console.log("Cookie permitido!");
+            location.reload();
+        })
+    });
+    
     var cookies = document.cookie;
     if (!cookies.includes("login")) {
         console.log("Não logado.");
@@ -18,20 +30,33 @@
         $.getScript("js/Apostador.js", function () {
             alert("Script loaded but not necessarily executed.");
         });*/
-        console.log(cookies);
-        let login = cookies.substr(cookies.indexOf("login=") + 6, cookies.indexOf(";") - (cookies.indexOf("login=") + 6));
-        console.log("O login da criatura é:", login);
+        //console.log(cookies);
+        let login = cookies.substring(cookies.indexOf("login=") + 6, cookies.indexOf(";", cookies.indexOf("login=")));
+        //console.log(cookies.indexOf(";", cookies.indexOf("login=")));
+        //console.log("O login da criatura é:", login);
         if (cookies.search("adm") != -1) {
             console.log("É adm");
             //var usuario1 = new Usuario(login);
             var usuario = new Administrador(login);
-            console.log(usuario.getLogin());
+            //console.log(usuario.getLogin());
+            //console.log(login);
         } else {
             console.log("É usuario");
             var usuario = new Apostador(login);
+            $.ajax({
+                url: "../php/pegaApostadorById.php",
+                method: "POST",
+                data: { login: usuario.getLogin() }
+            }).done(function (msg) {
+                //console.log("ASDSDASA: ", msg);
+                var usrObj = JSON.parse(msg);
+                usuario.setBoloes(usrObj.boloes);
+                usuario.setApostas(usrObj.apostas);
+            });
         }
     }
     
+    /*================================================================== Cookies ==================================================================*/
     
     /*================================================================== Janela geral ==================================================================*/
     
@@ -183,6 +208,69 @@
         if(confirm("Você deseja convidar o usuário " + nickApostador + "?")) {
             usuario.convidarApostadorParaBolao($(".rmv-bolao").attr("id"),nickApostador);
         }
+    });
+    
+    $(document).on("click", ".inserir-palp", function () {
+        console.log($(this.parentNode).find(".teams").html());
+        var times = $(this.parentNode).find(".teams").html();
+        var team1 = times.substring(0,times.indexOf("X") - 1);
+        var team2 = times.substring(times.indexOf("X") + 2);
+        var gol_team1 = prompt("Quantos gols você acha que o " + team1 + " vai marcar?");
+        if(gol_team1 != null) {
+            if(gol_team1 == "") {
+                alert("Você deve digitar uma quantidade de gols!")
+            }
+            else {
+                if(isNaN(parseInt(gol_team1))) {
+                    alert("Você deve digitar um número inteiro!");
+                }
+                else {
+                    var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team1 + " gol(s)?");
+                    if(confirmaçãoTime1) {
+                        var gol_team2 = prompt("Quantos gols você acha que o " + team2 + " vai marcar?");
+                        if(gol_team2 == "") {
+                            alert("Você deve digitar uma quantidade de gols!")
+                        }
+                        else {
+                            if(isNaN(parseInt(gol_team2))) {
+                                alert("Você deve digitar um número inteiro!");
+                            }
+                            else {
+                                var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team2 + " gol(s)?");
+                                if(confirmaçãoTime2) {
+                                    console.log("O palpite do otário é:", gol_team1 + "X" + gol_team2);
+                                    var valor = prompt("Quanto dinheiro você irá apostar?");
+                                    if(valor == "") {
+                                        alert("Você deve digitar um valor!")
+                                    }
+                                    else {
+                                        if(isNaN(parseFloat(valor))) {
+                                            alert("Você deve digitar um número real!");
+                                        }
+                                        else {
+                                            var confirmaçãoValor = confirm("Você tem certeza de que deseja apostar R$" + valor + "?");
+                                            if(confirmaçãoValor) {
+                                                console.log("O otário apostou R$", valor);
+                                                let palpite = gol_team1 + "X" + gol_team2;
+                                                var aposta = new Aposta(palpite, usuario.getLogin() , valor);
+                                                //console.log(aposta);
+                                                //console.log(this.id);
+                                                var id_bolao = this.id.substring(0,this.id.indexOf("/"));
+                                                var id_jogo = this.id.substring(this.id.indexOf("/") + 1);
+                                                //console.log("idbolao=", id_bolao);
+                                                //console.log("idjogo=", id_jogo);
+                                                usuario.inserirpalpite(id_bolao,id_jogo,aposta);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
     });
     
     /*================================================================== Visualizar Bolão  ==================================================================*/

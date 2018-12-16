@@ -10,6 +10,7 @@
     
     $login_cookie = $_COOKIE['login'];
     $type_cookie = $_COOKIE['tipo'];
+    $cookie_permission = $_COOKIE['cookie'];
     echo "
         <!DOCTYPE html>
             <html>
@@ -77,88 +78,139 @@
                     <script src=\"js/Usuario.js\"></script>
                     <script src=\"js/Administrador.js\"></script>
                     <script src=\"js/Apostador.js\"></script>
+                    <script src=\"js/Aposta.js\"></script>
                     <script src=\"js/FormHandler.js\"></script>
+                    <script src=\"js/GerenciadordeApostas.js\"></script>
                     <script src=\"js/index.js\"></script>
                 </head>
 ";
-    if(isset($login_cookie)) {
-        if ($type_cookie == "adm") {
-            echo "
-                <body>
-                    <div class=\"limiter\">
-                        <div class=\"container-login100\">
-                            <ul style=\"width: 100%; overflow: hidden;\">
-                                <li id=\"cria-bolao\" style=\"float: left;\" class=\"menu-li clickable\"> Criar Bolão </li>
-                                <li id=\"logout-btn\" class=\"menu-li clickable\"> Logout </li>
-                                <span style=\"float: right; padding: 14px 16px;border-radius: 10px;\"> E ai administrador $login_cookie! </span>
-                            </ul>
-                            <div id=\"bolao_panel\">
-                                Bolões que vocẽ administra: </br>
-                                <ul id=\"adm-bolao-list\">";
-            
-                                $query = "SELECT * FROM Boloes";
-                                $query_result = $conn->query($query);
-                                
-                                while($row = $query_result->fetch_assoc()) {
-                                    $admobj = json_decode($row["administrador"]);
-                                    $apostadoresarr = json_decode($row["apostadores"]);
-                                    $jogosarr = json_decode($row["jogos"]);
-                                    // Calcular número de apostas e montante
-                                    $montanteTotal = 0;
-                                    $nApostasTotal = 0;
-                                    for($i = 0; $i < count($jogosarr); $i++) {
-                                        $nApostasTotal += count($jogosarr[$i]->apostas);
-                                        $montanteTotal += $jogosarr[$i]->montante;
-                                    }
-                                    //$oi = var_dump ($admobj);
-                                    //echo $oi;
-                                    if($admobj->login == $login_cookie) {
-                                        echo "<li id=\"" . $row["id"] . "\" class=\"bolao-list-adm clickable\"> Bolão " . $row["id"] . " - Quantidade de apostadores: " . count($apostadoresarr) . " / Quantidade de jogos: " . count($jogosarr) . " / Quantidade total de apostas: " . $nApostasTotal . " / Montante total do Bolão: " . $montanteTotal .  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
-                                    }
-                                }
-                                echo "</ul>
-                            </div>
-                        </div>
-                    </div>
-                </body>";
-        }
-        else {
-            $query = "SELECT boloes,convites FROM Usuarios WHERE BINARY Login = '$login_cookie'";
-            $query_result = $conn->query($query);
-            $row = $query_result->fetch_assoc();
-            $nconvites = count(json_decode($row["convites"]));
-            echo "
-                <body>
-                    <div class=\"limiter\">
+    if(isset($cookie_permission)) {
+        if(isset($login_cookie)) {
+            if ($type_cookie == "adm") {
+                echo "
+                    <body>
                         <div class=\"limiter\">
-                        <div class=\"container-login100\">
-                            <ul style=\"width: 100%; overflow: hidden;\">
-                                <li style=\"float: left;\" class=\"see-invites menu-li clickable\"> Visualizar convites <span id=\"n-invites\" style=\"border-radius: 3em;padding: 0.8em;background: rgb(0,0,0);color: white;" . ($nconvites>0? "" : "display:none;" ) ."\">" . ($nconvites>0? $nconvites : "" ) . "</span></li>
-                                <li id=\"logout-btn\" class=\"menu-li clickable\"> Logout </li>
-                                <span style=\"float: right; padding: 14px 16px;border-radius: 10px;\"> E ai usuário $login_cookie! </span>
-                            </ul>
-                            <div id=\"bolao_panel\">
-                                Bolões que vocẽ está inserido: </br>
-                                <ul id=\"usr-bolao-list\">";
-                                    
-                                    $boloesArr = json_decode($row["boloes"]);
-                                    for($i = 0; $i < count($boloesArr); $i++)  {
-                                        $query = "SELECT * FROM Boloes WHERE id = '$boloesArr[$i]'";
-                                        $query_result = $conn->query($query);
-                                        $row = $query_result->fetch_assoc();
+                            <div class=\"container-login100\">
+                                <ul style=\"width: 100%; overflow: hidden;\">
+                                    <li id=\"cria-bolao\" style=\"float: left;\" class=\"menu-li clickable\"> Criar Bolão </li>
+                                    <li id=\"logout-btn\" class=\"menu-li clickable\"> Logout </li>
+                                    <span style=\"float: right; padding: 14px 16px;border-radius: 10px;\"> E ai administrador $login_cookie! </span>
+                                </ul>
+                                <div id=\"bolao_panel\">
+                                    Bolões que vocẽ administra: </br>
+                                    <ul id=\"adm-bolao-list\">";
+
+                                    $query = "SELECT * FROM Boloes";
+                                    $query_result = $conn->query($query);
+
+                                    while($row = $query_result->fetch_assoc()) {
                                         $admobj = json_decode($row["administrador"]);
                                         $apostadoresarr = json_decode($row["apostadores"]);
                                         $jogosarr = json_decode($row["jogos"]);
                                         // Calcular número de apostas e montante
                                         $montanteTotal = 0;
                                         $nApostasTotal = 0;
-                                        for($j = 0; $j < count($jogosarr); $j++) {
-                                            $nApostasTotal += count($jogosarr[$j]->apostas);
-                                            $montanteTotal += $jogosarr[$j]->montante;
+                                        for($i = 0; $i < count($jogosarr); $i++) {
+                                            $nApostasTotal += count($jogosarr[$i]->apostas);
+                                            $montanteTotal += $jogosarr[$i]->montante;
                                         }
-                                        echo "<li id=\"" . $row["id"] . "\" class=\"bolao-list-usr clickable\"> Bolão " . $row["id"] . " - Quantidade de apostadores: " . count($apostadoresarr) . " / Quantidade de jogos: " . count($jogosarr) . " / Quantidade total de apostas: " . $nApostasTotal . " / Montante total do Bolão: " . $montanteTotal .  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
+                                        //$oi = var_dump ($admobj);
+                                        //echo $oi;
+                                        if($admobj->login == $login_cookie) {
+                                            echo "<li id=\"" . $row["id"] . "\" class=\"bolao-list-adm clickable\"> Bolão " . $row["id"] . " - Quantidade de apostadores: " . count($apostadoresarr) . " / Quantidade de jogos: " . count($jogosarr) . " / Quantidade total de apostas: " . $nApostasTotal . " / Montante total do Bolão: " . $montanteTotal .  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
+                                        }
                                     }
-                            echo "</ul>
+                                    echo "</ul>
+                                </div>
+                            </div>
+                        </div>
+                    </body>";
+            }
+            else {
+                $query = "SELECT boloes,convites FROM Usuarios WHERE BINARY Login = '$login_cookie'";
+                $query_result = $conn->query($query);
+                $row = $query_result->fetch_assoc();
+                $nconvites = count(json_decode($row["convites"]));
+                echo "
+                    <body>
+                        <div class=\"limiter\">
+                            <div class=\"limiter\">
+                            <div class=\"container-login100\">
+                                <ul style=\"width: 100%; overflow: hidden;\">
+                                    <li style=\"float: left;\" class=\"see-invites menu-li clickable\"> Visualizar convites <span id=\"n-invites\" style=\"border-radius: 3em;padding: 0.8em;background: rgb(0,0,0);color: white;" . ($nconvites>0? "" : "display:none;" ) ."\">" . ($nconvites>0? $nconvites : "" ) . "</span></li>
+                                    <li id=\"logout-btn\" class=\"menu-li clickable\"> Logout </li>
+                                    <span style=\"float: right; padding: 14px 16px;border-radius: 10px;\"> E ai usuário $login_cookie! </span>
+                                </ul>
+                                <div id=\"bolao_panel\">
+                                    Bolões que vocẽ está inserido: </br>
+                                    <ul id=\"usr-bolao-list\">";
+
+                                        $boloesArr = json_decode($row["boloes"]);
+                                        for($i = 0; $i < count($boloesArr); $i++)  {
+                                            $query = "SELECT * FROM Boloes WHERE id = '$boloesArr[$i]'";
+                                            $query_result = $conn->query($query);
+                                            $row = $query_result->fetch_assoc();
+                                            $admobj = json_decode($row["administrador"]);
+                                            $apostadoresarr = json_decode($row["apostadores"]);
+                                            $jogosarr = json_decode($row["jogos"]);
+                                            // Calcular número de apostas e montante
+                                            $montanteTotal = 0;
+                                            $nApostasTotal = 0;
+                                            for($j = 0; $j < count($jogosarr); $j++) {
+                                                $nApostasTotal += count($jogosarr[$j]->apostas);
+                                                $montanteTotal += $jogosarr[$j]->montante;
+                                            }
+                                            echo "<li id=\"" . $row["id"] . "\" class=\"bolao-list-usr clickable\"> Bolão " . $row["id"] . " - Quantidade de apostadores: " . count($apostadoresarr) . " / Quantidade de jogos: " . count($jogosarr) . " / Quantidade total de apostas: " . $nApostasTotal . " / Montante total do Bolão: " . $montanteTotal .  " R$ <img class=\"boloes-icon\" src=\"../images/config.png\"> </li>";
+                                        }
+                                echo "</ul>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                ";
+            }
+        }
+        else {
+            echo "
+                <body>
+                <div class=\"limiter\">
+                        <div class=\"container-login100\">
+                            <div class=\"wrap\">
+                                <form id=\"login-form\" action=\"/php/login.php\" method=\"POST\" class=\"form validate-form\">
+                                    <span class=\"form-title p-b-26\">
+                                        Sistema de Bolão
+                                    </span>
+                                    <span class=\"form-title p-b-48\">
+                                        <img style=\"height: 3em;\" src=\"images/black.png\"/>
+                                    </span>
+                                        <div class=\"wrap-input100 validate-input\" data-validate=\"Digite seu login!\">
+                                        <input id=\"login-input\" class=\"input100\" type=\"text\" name=\"login\">
+                                        <span class=\"focus-input100\" data-placeholder=\"Login\"></span>
+                                    </div>
+                                        <div class=\"wrap-input100 validate-input\" data-validate=\"Digite sua senha!\">
+                                            <span class=\"btn-show-pass\">
+                                                <i class=\"zmdi zmdi-eye\"></i>
+                                            </span>
+                                            <input id=\"pass-input\" class=\"input100\" type=\"password\" name=\"senha\">
+                                            <span class=\"focus-input100\" data-placeholder=\"Senha\"></span>
+                                        </div>
+                                        <div class=\"container-form-btn\">
+                                        <div class=\"wrap-form-btn\">
+                                            <div class=\"form-bgbtn\"></div>
+                                            <button class=\"form-btn\">
+                                                Login
+                                            </button>
+                                        </div>
+                                    </div>
+                                        <div class=\"text-center p-t-115\">
+                                        <span class=\"txt1\">
+                                            Não tem conta?
+                                        </span>
+                                        <span id=\"cadastro\" class=\"txt2 clickable\">
+                                            Cadastre-se
+                                        </span>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -171,42 +223,18 @@
             <body>
             <div class=\"limiter\">
                     <div class=\"container-login100\">
-                        <div class=\"wrap\">
-                            <form id=\"login-form\" action=\"/php/login.php\" method=\"POST\" class=\"form validate-form\">
+                        <div class=\"wrap\" style=\"text-align: center;\">
                                 <span class=\"form-title p-b-26\">
                                     Sistema de Bolão
                                 </span>
                                 <span class=\"form-title p-b-48\">
-                                    <img style=\"height: 3em;\" src=\"images/black.png\"/>
+                                    <img style=\"height: 3em;\" src=\"../images/black.png\"/>
                                 </span>
-                                    <div class=\"wrap-input100 validate-input\" data-validate=\"Digite seu login!\">
-                                    <input id=\"login-input\" class=\"input100\" type=\"text\" name=\"login\">
-                                    <span class=\"focus-input100\" data-placeholder=\"Login\"></span>
-                                </div>
-                                    <div class=\"wrap-input100 validate-input\" data-validate=\"Digite sua senha!\">
-                                        <span class=\"btn-show-pass\">
-                                            <i class=\"zmdi zmdi-eye\"></i>
-                                        </span>
-                                        <input id=\"pass-input\" class=\"input100\" type=\"password\" name=\"senha\">
-                                        <span class=\"focus-input100\" data-placeholder=\"Senha\"></span>
-                                    </div>
-                                    <div class=\"container-form-btn\">
-                                    <div class=\"wrap-form-btn\">
-                                        <div class=\"form-bgbtn\"></div>
-                                        <button class=\"form-btn\">
-                                            Login
-                                        </button>
-                                    </div>
-                                </div>
-                                    <div class=\"text-center p-t-115\">
-                                    <span class=\"txt1\">
-                                        Não tem conta?
-                                    </span>
-                                    <span id=\"cadastro\" class=\"txt2 clickable\">
-                                        Cadastre-se
-                                    </span>
-                                </div>
-                            </form>
+                                    <div class=\"text-center\">
+                                    Para que o site funcione corretamente você deve permitir o uso de cookies.<br/> Não sabe o que é um cookie? <a href=\"https://www.google.com/search?q=o+que+%C3%A9+cookie%3F&oq=o+que+%C3%A9+cookie%3F&aqs=chrome..69i57j0l5.2513j0j7&sourceid=chrome&ie=UTF-8\" target=\"_blank\"> Pesquise sobre cookies! </a>
+                                     </div>
+                                     <button id=\"cookie-permission\" href=\"../index.php\" style=\"color: white; background: black;padding: 0.5em;margin: 0.5em;border-radius: 5px;\" type=\"button\">Eu permito o uso de cookies! </button>
+                                     
                         </div>
                     </div>
                 </div>
