@@ -84,13 +84,6 @@ class Jogo {
         }
     }
 
-    getApostas() {
-        return this.apostas;
-    }
-
-    setApostas(apostas) {
-        this.apostas = apostas;
-    }
     
     getId() {
         return this.id;
