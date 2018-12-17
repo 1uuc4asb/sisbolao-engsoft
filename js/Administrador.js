@@ -39,6 +39,7 @@ class Administrador extends Usuario {
             let id = index;
             let time1 = $("." + game.className).find($(".modal-game-team1")[index-1]).val();
             let time2 = $("." + game.className).find($(".modal-game-team2")[index-1]).val();
+            console.log($("." + game.className).find($(".modal-game-date")[index-1]).val());
             let data = new Date($("." + game.className).find($(".modal-game-date")[index-1]).val());
             console.log("Data do jogo carai1: ", data);
             console.log("Data do jogo carai1: ", data.getFullYear() + "/"  + data.getMonth() + "/" + data.getDate() + " " + data.getHours() + ":" + data.getMinutes());
@@ -139,7 +140,97 @@ class Administrador extends Usuario {
         });
     }
 
-    registrarResultadoJogo() {
-
+    registrarResultadoJogo(bolao_id,game_id) {
+        var bolaoObj; // É indiretamente uma instancia de Bolao
+        var bolao; // Será a instancia de bolao
+        var thisUsuario = this;
+            $.ajax({
+                url: "../php/pegarBolaoById.php",
+                method: "POST",
+                async: false,
+                data: {id: bolao_id}
+            }).done(function (bolaoJSON) {
+                try {
+                    bolaoObj = JSON.parse(bolaoJSON);
+                } catch (e) {
+                    if(bolaoJSON[0] == "E") {
+                        alert(bolaoJSON);
+                    }
+                    else {
+                        alert("O bolão não existe mais...");
+                        $.ajax({
+                            url: "../php/mostrarTabelaUsr.php",
+                            method: "POST",
+                            data: { login: thisUsuario.getLogin()}
+                        }).done(function (msg) {
+                            $(".container-login100").html(msg);
+                            //alert("Atualizou boy");
+                        });
+                    }
+                }
+                console.log(bolaoJSON);
+                console.log(bolaoObj);
+                let jogos = [];
+                for(let i=0;i<bolaoObj.jogos.length;i++) {
+                    let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
+                    let apostas = [];
+                    for(var j=0;j<bolaoObj.jogos[i].apostas.length; j++) {
+                        let aposta = new Aposta(bolaoObj.jogos[i].apostas[j].palpite,bolaoObj.jogos[i].apostas[j].dono, bolaoObj.jogos[i].apostas[j].valor);
+                        apostas.push(aposta);
+                    }
+                    jogo.setApostas(apostas);
+                    jogo.setMontante(bolaoObj.jogos[i].montante);
+                    jogo.setResultado(bolaoObj.jogos[i].resultado);
+                    let lista = new ListaDeObservadores();
+                    jogo.setListadeObservadores(lista);
+                    for(let j=0;j<bolaoObj.jogos[i].observadores.lista.length;j++) {
+                        jogo.adicionarObservador(bolaoObj.jogos[i].observadores.lista[j]);
+                    }
+                    jogos.push(jogo);
+                }
+                //console.log(bolaoObj);
+                let adm = new Administrador(bolaoObj.administrador.login);
+                bolao = new Bolao(jogos,bolaoObj.regras,bolaoObj.regra_de_desempate,adm);
+                bolao.setID(bolaoObj.id);
+                bolao.setApostadores(bolaoObj.apostadores);
+                //console.log("Bolao:", bolao);
+                var team1 = bolao.getJogos()[game_id -1].getTime1(),team2 = bolao.getJogos()[game_id -1].getTime2();
+                var gol_team1 = prompt("Quantos gols o " + team1 + " marcou?");
+                if(gol_team1 != null) {
+                    if(gol_team1 == "") {
+                        alert("Você deve digitar uma quantidade de gols!")
+                    }
+                    else {
+                        if(isNaN(parseInt(gol_team1))) {
+                            alert("Você deve digitar um número inteiro!");
+                        }
+                        else {
+                            var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fez " + gol_team1 + " gol(s)?");
+                            if(confirmaçãoTime1) {
+                                var gol_team2 = prompt("Quantos gols o " + team2 + " marcou?");
+                                if(gol_team2 == "") {
+                                    alert("Você deve digitar uma quantidade de gols!")
+                                }
+                                else {
+                                    if(isNaN(parseInt(gol_team2))) {
+                                        alert("Você deve digitar um número inteiro!");
+                                    }
+                                    else {
+                                        var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fez " + gol_team2 + " gol(s)?");
+                                        if(confirmaçãoTime2) {
+                                            console.log("Resultado foi:", team1 + " " + gol_team1 +   " X " + gol_team2 + " " + team2);
+                                            let resultado = gol_team1 + " X " + gol_team2;
+                                            bolao.getJogos()[game_id -1].setResultado(resultado);
+                                            bolao.getJogos()[game_id -1].notificarObservadores();
+                                            // Salvar resultado no banco
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        });
+        
     }
 }

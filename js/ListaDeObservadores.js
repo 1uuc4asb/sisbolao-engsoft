@@ -19,7 +19,7 @@ class ListaDeObservadores {
         }
     }
     
-    contar () {
+    contar() {
         return this.lista.length;
     }
     

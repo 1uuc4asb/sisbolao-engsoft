@@ -50,7 +50,11 @@ class Usuario {
                     jogo.setApostas(apostas);
                     jogo.setMontante(bolaoObj.jogos[i].montante);
                     jogo.setResultado(bolaoObj.jogos[i].resultado);
-                    jogo.setListadeObservadores(bolaoObj.jogos[i].observadores);
+                    let lista = new ListaDeObservadores();
+                    jogo.setListadeObservadores(lista);
+                    for(let j=0;j<bolaoObj.jogos[i].observadores.lista.length;j++) {
+                        jogo.adicionarObservador(bolaoObj.jogos[i].observadores.lista[j]);
+                    }
                     jogos.push(jogo);
                 }
                 //console.log(bolaoObj);
@@ -89,14 +93,14 @@ class Usuario {
             let dataFinal = dataUtc/1000 | 0;
             //console.log("dataFinal", dataFinal);
             for(let i=0;i<bolao.getJogos().length; i++) {
-                //console.log("DataJogo", bolao.getJogos()[i].data);
+                console.log("DataJogo", bolao.getJogos()[i].data);
                 gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
                                     (dataFinal>bolao.getJogos()[i].data? (bolao.getJogos()[i].getResultado()==""? "<button style=\"float: right;\" id=\"" + bolao.getJogos()[i].getId()  + "\" class=\"register-game-result\" > Registrar resultado de jogo </button>" : "<div style=\"float: rigth;\">Resultado de jogo registrado!</div>") : "") +
                                     "<div class=\"teams\" style=\"font-size: 3.5em; margin: 1em;\">" +
                                         bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : bolao.getJogos()[i].getResultado()) + bolao.getJogos()[i].getTime2() +
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
-                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).toLocaleDateString() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
+                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCDate() + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMonth() + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCFullYear() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
                                         "<b>Tempo limite de aposta</b>: " + bolao.getJogos()[i].getTempoLimite()[0] + " dia " + bolao.getJogos()[i].getTempoLimite()[1] + " horas " + bolao.getJogos()[i].getTempoLimite()[2] + " minutos antes do jogo..." +

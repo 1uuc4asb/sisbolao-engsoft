@@ -248,6 +248,7 @@
         var game_id = this.id;
         var bolao_id = $($(this.parentNode.parentNode.parentNode).find(".rmv-bolao")).attr("id");
         console.log("game  e bolao", game_id, bolao_id);
+        usuario.registrarResultadoJogo(bolao_id,game_id);
     });
     
     $(document).on("click", ".inserir-palp", function () {

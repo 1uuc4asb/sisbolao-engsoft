@@ -29,6 +29,8 @@ class Jogo {
     }
     
     notificarObservadores() {
+        console.log("Entrouaaaa");
+        console.log(this.observadores);
         var tamanhoDaLista = this.observadores.contar();
         let observadoresObj = [];
         for(let i=0;i<tamanhoDaLista;i++) {
@@ -39,7 +41,7 @@ class Jogo {
                     url: "../php/pegarBolaoById.php",
                     method: "POST",
                     async: false,
-                    data: {id: id}
+                    data: {id: id_bolao}
                 }).done(function (bolaoJSON) {
                     try {
                         bolaoObj = JSON.parse(bolaoJSON);
@@ -61,7 +63,11 @@ class Jogo {
                         jogo.setApostas(apostas);
                         jogo.setMontante(bolaoObj.jogos[i].montante);
                         jogo.setResultado(bolaoObj.jogos[i].resultado);
-                        jogo.setListadeObservadores(bolaoObj.jogos[i].observadores);
+                        let lista = new ListaDeObservadores();
+                        jogo.setListadeObservadores(lista);
+                        for(let j=0;j<bolaoObj.jogos[i].observadores.lista.length;j++) {
+                            jogo.adicionarObservador(bolaoObj.jogos[i].observadores.lista[j]);
+                        }
                         jogos.push(jogo);
                     }
                     //console.log(bolaoObj);
@@ -74,7 +80,7 @@ class Jogo {
             observadoresObj.push(bolao);
         }
         for(let i=0;i<observadoresObj.length; i++) {
-            observadoresObj[i].atualizarRanking();
+            observadoresObj[i].atualizarRanking(this.apostas,this.resultado);
         }
     }
 
@@ -121,7 +127,6 @@ class Jogo {
     }
      setResultado(resultado) {
         this.resultado = resultado;
-        this.notificarObservadores();
     }
     getMontante() {
         return this.montante;

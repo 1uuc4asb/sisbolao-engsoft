@@ -82,6 +82,7 @@ li {
 .bolao-list-adm, .bolao-list-usr {
     border: solid;
     margin: 1em;
+    overflow: hidden;
 }
 .boloes-icon {
     height: 2em;
