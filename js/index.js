@@ -35,7 +35,7 @@
         //console.log(cookies.indexOf(";", cookies.indexOf("login=")));
         //console.log("O login da criatura é:", login);
         if (cookies.search("adm") != -1) {
-            console.log("É adm");
+            //console.log("É adm");
             //var usuario1 = new Usuario(login);
             var usuario = new Administrador(login);
             let mudou = false;
@@ -58,7 +58,7 @@
             //console.log(usuario.getLogin());
             //console.log(login);
         } else {
-            console.log("É usuario");
+            //console.log("É usuario");
             var usuario = new Apostador(login);
             $.ajax({
                 url: "../php/pegaApostadorById.php",
@@ -244,10 +244,19 @@
         }
     });
     
+    $(document).on("click", "#rmv-usr-btn", function () {
+        var nickApostador = $("#rmv-usr").val();
+        if(nickApostador != "" && nickApostador != null && nickApostador) {
+            if(confirm("Você deseja excluir o usuário " + nickApostador + " do bolão?")) {
+                usuario.excluirApostadorDeBolao($(".rmv-bolao").attr("id"),nickApostador);
+            }
+        }
+    });
+    
     $(document).on("click", ".register-game-result", function () {
         var game_id = this.id;
         var bolao_id = $($(this.parentNode.parentNode.parentNode).find(".rmv-bolao")).attr("id");
-        console.log("game  e bolao", game_id, bolao_id);
+        //console.log("game  e bolao", game_id, bolao_id);
         usuario.registrarResultadoJogo(bolao_id,game_id);
     });
     
@@ -312,6 +321,54 @@
             }
         }
         
+    });
+    
+    $(document).on("click", ".editar-palp", function () {
+        console.log($(this.parentNode).find(".teams").html());
+        var times = $(this.parentNode).find(".teams").html();
+        var team1 = times.substring(0,times.indexOf("X") - 1);
+        var team2 = times.substring(times.indexOf("X") + 2);
+        var palpiteAnterior = $(this.parentNode).find(".palpite-atual").html().substring($(this.parentNode).find(".palpite-atual").html().indexOf(team1) + team1.length + 1,$(this.parentNode).find(".palpite-atual").html().indexOf(team2) -1);
+        //console.log("PALPITE ANTERIOR PARÇA:", palpiteAnterior);
+        var palpite1Anterior = palpiteAnterior.substring(0,palpiteAnterior.indexOf("X") - 1);
+        var palpite2Anterior = palpiteAnterior.substring(palpiteAnterior.indexOf("X") + 2);
+        //console.log("palpite1", palpite1Anterior);
+        //console.log("palpite2", palpite2Anterior);
+        var gol_team1 = prompt("Em seu palpite anterior o " + team1 + " marcaria " + palpite1Anterior + " gol(s). Quantos gols você acha que o " + team1 + " vai marcar?");
+        if(gol_team1 != null) {
+            if(gol_team1 == "") {
+                alert("Você deve digitar uma quantidade de gols!")
+            }
+            else {
+                if(isNaN(parseInt(gol_team1))) {
+                    alert("Você deve digitar um número inteiro!");
+                }
+                else {
+                    var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team1 + " gol(s)?");
+                    if(confirmaçãoTime1) {
+                        var gol_team2 = prompt("Em seu palpite anterior o " + team2 + " marcaria " + palpite2Anterior + " gol(s). Quantos gols você acha que o " + team2 + " vai marcar?");
+                        if(gol_team2 == "") {
+                            alert("Você deve digitar uma quantidade de gols!")
+                        }
+                        else {
+                            if(isNaN(parseInt(gol_team2))) {
+                                alert("Você deve digitar um número inteiro!");
+                            }
+                            else {
+                                var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fará " + gol_team2 + " gol(s)?");
+                                if(confirmaçãoTime2) {
+                                    console.log("O palpite do otário é:", gol_team1 + "X" + gol_team2);
+                                    let palpite = gol_team1 + "X" + gol_team2;
+                                    var id_bolao = this.id.substring(0,this.id.indexOf("/"));
+                                    var id_jogo = this.id.substring(this.id.indexOf("/") + 1);
+                                    usuario.editarpalpite(id_bolao,id_jogo, palpite);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     });
     
     /*================================================================== Visualizar Bolão  ==================================================================*/

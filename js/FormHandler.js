@@ -4,11 +4,11 @@ class FormHandler {
         let first = false;
         if (!FormHandler.instance) {
             first = true;
-            console.log("Instanciou a primeira vez");
+            //console.log("Instanciou a primeira vez");
             FormHandler.instance = this;
         }
         if (!first)
-            console.log("Agora é só cópia parça");
+            //console.log("Agora é só cópia parça");
         return FormHandler.instance;
     }
 

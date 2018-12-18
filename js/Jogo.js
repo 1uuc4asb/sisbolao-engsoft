@@ -28,9 +28,10 @@ class Jogo {
         this.observadores.remover(indice);
     }
     
-    notificarObservadores() {
-        console.log("Entrouaaaa");
-        console.log(this.observadores);
+    notificarObservadores(callback) {
+        //console.log("Entrouaaaa");
+        //console.log(this.observadores);
+        var thisJogo = this;
         var tamanhoDaLista = this.observadores.contar();
         let observadoresObj = [];
         for(let i=0;i<tamanhoDaLista;i++) {
@@ -48,27 +49,34 @@ class Jogo {
                     } catch (e) {
                         if(bolaoJSON[0] == "E") {
                             alert(bolaoJSON);
+                            callback(false);
+                            return;
                         }
                     }
                     console.log(bolaoJSON);
                     console.log(bolaoObj);
                     let jogos = [];
                     for(let i=0;i<bolaoObj.jogos.length;i++) {
-                        let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
-                        let apostas = [];
-                        for(var j=0;j<bolaoObj.jogos[i].apostas.length; j++) {
-                            let aposta = new Aposta(bolaoObj.jogos[i].apostas[j].palpite,bolaoObj.jogos[i].apostas[j].dono, bolaoObj.jogos[i].apostas[j].valor);
-                            apostas.push(aposta);
+                        if(thisJogo.getId() == i+1) {
+                            jogos.push(thisJogo);
                         }
-                        jogo.setApostas(apostas);
-                        jogo.setMontante(bolaoObj.jogos[i].montante);
-                        jogo.setResultado(bolaoObj.jogos[i].resultado);
-                        let lista = new ListaDeObservadores();
-                        jogo.setListadeObservadores(lista);
-                        for(let j=0;j<bolaoObj.jogos[i].observadores.lista.length;j++) {
-                            jogo.adicionarObservador(bolaoObj.jogos[i].observadores.lista[j]);
+                        else {
+                            let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
+                            let apostas = [];
+                            for(var j=0;j<bolaoObj.jogos[i].apostas.length; j++) {
+                                let aposta = new Aposta(bolaoObj.jogos[i].apostas[j].palpite,bolaoObj.jogos[i].apostas[j].dono, bolaoObj.jogos[i].apostas[j].valor);
+                                apostas.push(aposta);
+                            }
+                            jogo.setApostas(apostas);
+                            jogo.setMontante(bolaoObj.jogos[i].montante);
+                            jogo.setResultado(bolaoObj.jogos[i].resultado);
+                            let lista = new ListaDeObservadores();
+                            jogo.setListadeObservadores(lista);
+                            for(let j=0;j<bolaoObj.jogos[i].observadores.lista.length;j++) {
+                                jogo.adicionarObservador(bolaoObj.jogos[i].observadores.lista[j]);
+                            }
+                            jogos.push(jogo);
                         }
-                        jogos.push(jogo);
                     }
                     //console.log(bolaoObj);
                     let adm = new Administrador(bolaoObj.administrador.login);
@@ -79,8 +87,16 @@ class Jogo {
                 });
             observadoresObj.push(bolao);
         }
+        var answerGlobal = true;
         for(let i=0;i<observadoresObj.length; i++) {
-            observadoresObj[i].atualizarRanking(this.apostas,this.resultado);
+            observadoresObj[i].atualizarRanking( function (answer) {
+                console.log("Atualizou ranking haha");
+                if(answer != true) {
+                    alert("Erro ao atualizar o ranking.");
+                    answerGlobal = false;
+                }
+                callback(answerGlobal);
+            },this.apostas,this.resultado);
         }
     }
 
@@ -118,7 +134,7 @@ class Jogo {
     getResultado() {
         return this.resultado;
     }
-     setResultado(resultado) {
+    setResultado(resultado) {
         this.resultado = resultado;
     }
     getMontante() {

@@ -9,12 +9,88 @@ class Bolao {
         this.Administrador = administrador;
     }
 
-    calcularPremioeDefinirVencedor() {
-
+    calcularPremioeDefinirVencedor(callback) {
+        console.log("Jogo acabou. Definindo premio e vencedor");
+        var qtApostas = 0;
+        for(let i=0;i<this.jogos.length; i++) {
+             qtApostas += this.jogos[i].getApostas().length;
+        }
+        if(qtApostas <= 0) {
+            this.ranking[0] = { apostador: "NÃO HOUVERAM APOSTAS" , pontuacao: 0 };
+        }
+        else {
+            var thisBolao = this;
+            var premio = 0;
+            for(let i=0;i<this.jogos.length; i++) {
+                premio += parseFloat(this.jogos[i].getMontante());
+            }
+            var novoRanking = [];
+            var lastRank;
+            console.log("CARALHPORRA", this.ranking);
+            if(this.ranking[0].pontuacao == this.ranking[1].pontuacao) {
+                console.log("Empate");
+                novoRanking.push(this.ranking[0]);
+                novoRanking.push(this.ranking[1]);
+                let i = 2;
+                while( this.ranking[i] && (this.ranking[i-1].pontuacao == this.ranking[i].pontuacao)) {
+                    novoRanking.push(this.ranking[i]);
+                    i++;
+                }
+                lastRank = i;
+                switch (this.tiebreakerRules) { // FAZER O DESEMPATE E ORDENAR NOVO RANKING
+                    case "random": 
+                        novoRanking.sort(function () {
+                            return (Math.round(Math.random())-0.5);
+                        });
+                        break;
+                    case "ordemalfabetica":
+                        novoRanking.sort(function(a,b) {
+                            return a.apostador < b.apostador ? -1 : a.apostador > b.apostador ? 1 : 0;
+                        });
+                        break;
+                    case "nboloes":
+                        var usuariosDoBolao = [];
+                        for(let i=0;i<thisBolao.apostadores.length;i++) {
+                            var usuario = new Apostador(thisBolao.apostadores[i]);
+                            $.ajax({
+                                url: "../php/pegaApostadorById.php",
+                                method: "POST",
+                                data: { login: usuario.getLogin() },
+                                async: false
+                            }).done(function (msg) {
+                                var usrObj = JSON.parse(msg);
+                                console.log(usrObj);
+                                usuario.setBoloes(usrObj.boloes);
+                                usuario.setApostas(usrObj.apostas);
+                            });
+                            usuariosDoBolao.push(usuario);
+                        }
+                        console.log(usuariosDoBolao);
+                        novoRanking.sort(function(a,b) {
+                            return usuariosDoBolao.find( x => x.getLogin() == a.apostador).getBoloes().length > usuariosDoBolao.find( x => x.getLogin() == b.apostador).getBoloes().length ? -1 : usuariosDoBolao.find( x => x.getLogin() == a.apostador).getBoloes().length < usuariosDoBolao.find( x => x.getLogin() == b.apostador).getBoloes().length ? 1 : 0;
+                        });
+                        break;
+                }
+                for(let i = lastRank+1; i<this.ranking.length; i++) {
+                    novoRanking.push(this.ranking[i]);
+                }
+                console.log("Atualizou");
+                this.ranking = novoRanking;
+                this.ranking[0].apostador = " VENCEDOR! PREMIO: R$" + premio + " / " + this.ranking[0].apostador;
+                console.log("Atualizou");
+            }
+            else {
+                console.log("Sem empate");
+                this.ranking[0].apostador = " VENCEDOR! PREMIO: R$" + premio + " / " + this.ranking[0].apostador;
+            }
+            console.log("Ranking final:", this.ranking);  
+        }
+        callback();
     }
     
-    atualizarRanking(apostas,resultado) {
+    atualizarRanking(callback,apostas,resultado) {
         console.log("CARALHOOO", apostas,resultado);
+        var thisBolao = this;
         var gol1 = resultado.substring(0,resultado.indexOf("X") - 1);
         var gol2 = resultado.substring(resultado.indexOf("X") + 2);
         for(let i=0;i<apostas.length;i++) {
@@ -49,8 +125,45 @@ class Bolao {
             return 0;
         });
         // Verifica se todos os jogos acabaram, se sim, chama calcula premio e define vencedor.
-        // Salvar ranking de bolao no banco
-        console.log(this.ranking);
+        var acabou = true;
+        for(let i=0;i<this.jogos.length; i++) {
+            console.log("Resultadoooo:", this.jogos[i].getResultado());
+            if(this.jogos[i].getResultado() == "") {
+                acabou = false;
+            }
+        }
+        var answerGlobal = true;
+        if(acabou) {
+            this.calcularPremioeDefinirVencedor(function () {
+                console.log("Calculou tudo, agora vai guardar...");
+                $.ajax({
+                    url: "../php/salvarRankingDeBolao.php",
+                    method: "POST",
+                    data: {bolao: thisBolao.toString()}
+                }).done(function (msg) {
+                    if(msg != "success") {
+                        alert(msg);
+                        answerGlobal = false;
+                    }
+                    console.log("SUCESSO SALVANDO O RANKING");
+                    callback(answerGlobal);
+                });
+            });
+        }
+        else {
+            $.ajax({
+                    url: "../php/salvarRankingDeBolao.php",
+                    method: "POST",
+                    data: {bolao: thisBolao.toString()}
+                }).done(function (msg) {
+                    if(msg != "success") {
+                        alert(msg);
+                        answerGlobal = false;
+                    }
+                    console.log(thisBolao.ranking);
+                    callback(answerGlobal);
+                });
+        }
     }
     
     getAdministrador() {

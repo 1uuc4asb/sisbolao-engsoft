@@ -105,7 +105,13 @@ class Apostador extends Usuario {
         }, id_bolao,id_jogo, aposta);
     }
 
-    editarpalpite(id_bolao,id_jogo, aposta) {
-
+    editarpalpite(id_bolao,id_jogo, palpite) {
+        console.log(id_bolao, id_jogo, palpite);
+        var gerenciador = new Gerenciadordeapostas();
+        var thisApostador = this;
+        gerenciador.editarpalpitenojogo(function (resposta) {
+            alert(resposta);
+            thisApostador.visualizarBolao(id_bolao);
+        }, id_bolao,id_jogo, palpite, this.getLogin());
     }
 }

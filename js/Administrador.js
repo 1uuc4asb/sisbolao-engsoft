@@ -139,6 +139,24 @@ class Administrador extends Usuario {
             }
         });
     }
+    
+    excluirApostadorDeBolao(bolao, apostador) {
+        console.log("Id do bolao:", bolao);
+        console.log("Nick do apostador:", apostador);
+        $.ajax({
+            url: "../php/excluirApostadorDeBolao.php",
+            method: "POST",
+            data: { bolao: bolao, apostador: apostador }
+        }).done(function (answer) {
+            console.log(answer);
+            if(answer == "success") {
+                alert("O usuário foi excluído com sucesso!");
+            }
+            else {
+                alert(answer);
+            }
+        });
+    }
 
     registrarResultadoJogo(bolao_id,game_id) {
         var bolaoObj; // É indiretamente uma instancia de Bolao
@@ -168,8 +186,8 @@ class Administrador extends Usuario {
                         });
                     }
                 }
-                console.log(bolaoJSON);
-                console.log(bolaoObj);
+                //console.log(bolaoJSON);
+                //console.log(bolaoObj);
                 let jogos = [];
                 for(let i=0;i<bolaoObj.jogos.length;i++) {
                     let jogo = new Jogo(i+1,bolaoObj.jogos[i].time1,bolaoObj.jogos[i].time2,bolaoObj.jogos[i].tempoLimite,bolaoObj.jogos[i].data);
@@ -218,11 +236,28 @@ class Administrador extends Usuario {
                                     else {
                                         var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fez " + gol_team2 + " gol(s)?");
                                         if(confirmaçãoTime2) {
-                                            console.log("Resultado foi:", team1 + " " + gol_team1 +   " X " + gol_team2 + " " + team2);
+                                            //console.log("Resultado foi:", team1 + " " + gol_team1 +   " X " + gol_team2 + " " + team2);
                                             let resultado = gol_team1 + " X " + gol_team2;
                                             bolao.getJogos()[game_id -1].setResultado(resultado);
-                                            bolao.getJogos()[game_id -1].notificarObservadores();
-                                            // Salvar resultado no banco
+                                            //console.log("aasdgiudfngidoufgd", resultado, bolao.getJogos()[game_id -1].getResultado()+ "oi"  );
+                                            bolao.getJogos()[game_id -1].notificarObservadores( function (answer) {
+                                                if(answer === true) {
+                                                    console.log("Notificou tudo agora é salvar o resultado do jogo.");
+                                                    // Salvar resultado no banco
+                                                    $.ajax({
+                                                        url: "../php/salvarResultadoDeJogo.php",
+                                                        method: "POST",
+                                                        data: { bolao: bolao.toString() }
+                                                    }).done(function () {
+                                                        alert("Resultado registrado com sucesso!");
+                                                        thisUsuario.visualizarBolao(bolao.getID());
+                                                    }); 
+                                                }
+                                                else {
+                                                    console.log("Erro.....");
+                                                }
+                                            });
+                                            
                                         }
                                     }
                                 }
