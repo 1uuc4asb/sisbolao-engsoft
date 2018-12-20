@@ -83,6 +83,7 @@ class Jogo {
                     bolao = new Bolao(jogos,bolaoObj.regras,bolaoObj.regra_de_desempate,adm);
                     bolao.setID(bolaoObj.id);
                     bolao.setApostadores(bolaoObj.apostadores);
+                    bolao.setRanking(bolaoObj.ranking);
                     //console.log("Bolao:", bolao);
                 });
             observadoresObj.push(bolao);

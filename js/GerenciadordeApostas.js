@@ -44,9 +44,21 @@ class Gerenciadordeapostas {
         timelimit += jogo[0].getTempoLimite()[0] * 86400;
         timelimit += jogo[0].getTempoLimite()[1] * 3600;
         timelimit += jogo[0].getTempoLimite()[2] * 60;
+        Date.prototype.stdTimezoneOffset = function() {
+            var jan = new Date(this.getFullYear(), 0, 1);
+            var jul = new Date(this.getFullYear(), 6, 1);
+            return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+        }
+        Date.prototype.dst = function() {
+            return this.getTimezoneOffset() < this.stdTimezoneOffset();
+        }
         let data = new Date();
         let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(), data.getMinutes());
         let dataFinal = dataUtc/1000 | 0;
+        if(data.dst()) {
+            let offset = (data.stdTimezoneOffset() - data.getTimezoneOffset()) * 60;
+            dataFinal -= offset;
+        }
         //console.log("DataFinal: ", dataFinal);
         //console.log("Datalimite", (jogo[0].getData()));
         //console.log("timeLimit", timelimit);
@@ -115,9 +127,21 @@ class Gerenciadordeapostas {
         timelimit += jogo[0].getTempoLimite()[0] * 86400;
         timelimit += jogo[0].getTempoLimite()[1] * 3600;
         timelimit += jogo[0].getTempoLimite()[2] * 60;
+        Date.prototype.stdTimezoneOffset = function() {
+            var jan = new Date(this.getFullYear(), 0, 1);
+            var jul = new Date(this.getFullYear(), 6, 1);
+            return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+        }
+        Date.prototype.dst = function() {
+            return this.getTimezoneOffset() < this.stdTimezoneOffset();
+        }
         let data = new Date();
         let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(), data.getMinutes());
         let dataFinal = dataUtc/1000 | 0;
+        if(data.dst()) {
+            let offset = (data.stdTimezoneOffset() - data.getTimezoneOffset()) * 60;
+            dataFinal -= offset;
+        }
         //console.log("DataFinal: ", dataFinal);
         //console.log("Datalimite", (jogo[0].getData()));
         //console.log("timeLimit", timelimit);

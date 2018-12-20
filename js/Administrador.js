@@ -219,8 +219,8 @@ class Administrador extends Usuario {
                         alert("Você deve digitar uma quantidade de gols!")
                     }
                     else {
-                        if(isNaN(parseInt(gol_team1))) {
-                            alert("Você deve digitar um número inteiro!");
+                        if(isNaN(parseInt(gol_team1)) || parseInt(gol_team1) < 0) {
+                            alert("Você deve digitar um número natural!");
                         }
                         else {
                             var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fez " + gol_team1 + " gol(s)?");
@@ -230,8 +230,8 @@ class Administrador extends Usuario {
                                     alert("Você deve digitar uma quantidade de gols!")
                                 }
                                 else {
-                                    if(isNaN(parseInt(gol_team2))) {
-                                        alert("Você deve digitar um número inteiro!");
+                                    if(isNaN(parseInt(gol_team2)) || parseInt(gol_team1) < 0) {
+                                        alert("Você deve digitar um número natural!");
                                     }
                                     else {
                                         var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fez " + gol_team2 + " gol(s)?");

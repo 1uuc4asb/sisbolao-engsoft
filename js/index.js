@@ -271,8 +271,8 @@
                 alert("Você deve digitar uma quantidade de gols!")
             }
             else {
-                if(isNaN(parseInt(gol_team1))) {
-                    alert("Você deve digitar um número inteiro!");
+                if(isNaN(parseInt(gol_team1)) || parseInt(gol_team1) < 0) {
+                    alert("Você deve digitar um número natural!");
                 }
                 else {
                     var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team1 + " gol(s)?");
@@ -282,8 +282,8 @@
                             alert("Você deve digitar uma quantidade de gols!")
                         }
                         else {
-                            if(isNaN(parseInt(gol_team2))) {
-                                alert("Você deve digitar um número inteiro!");
+                            if(isNaN(parseInt(gol_team2)) || parseInt(gol_team1) < 0) {
+                                alert("Você deve digitar um número natural!");
                             }
                             else {
                                 var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fará " + gol_team2 + " gol(s)?");
@@ -294,8 +294,8 @@
                                         alert("Você deve digitar um valor!")
                                     }
                                     else {
-                                        if(isNaN(parseFloat(valor))) {
-                                            alert("Você deve digitar um número real!");
+                                        if(isNaN(parseFloat(valor)) || parseFloat(valor) <= 0.0) {
+                                            alert("Você deve digitar um número real positivo!");
                                         }
                                         else {
                                             var confirmaçãoValor = confirm("Você tem certeza de que deseja apostar R$" + valor + "?");
@@ -340,8 +340,8 @@
                 alert("Você deve digitar uma quantidade de gols!")
             }
             else {
-                if(isNaN(parseInt(gol_team1))) {
-                    alert("Você deve digitar um número inteiro!");
+                if(isNaN(parseInt(gol_team1)) || parseInt(gol_team1) < 0) {
+                    alert("Você deve digitar um número natural!");
                 }
                 else {
                     var confirmaçãoTime1 = confirm("Você tem certeza de que o " + team1 + " fará " + gol_team1 + " gol(s)?");
@@ -351,8 +351,8 @@
                             alert("Você deve digitar uma quantidade de gols!")
                         }
                         else {
-                            if(isNaN(parseInt(gol_team2))) {
-                                alert("Você deve digitar um número inteiro!");
+                            if(isNaN(parseInt(gol_team2)) || parseInt(gol_team1) < 0) {
+                                alert("Você deve digitar um número natural!");
                             }
                             else {
                                 var confirmaçãoTime2 = confirm("Você tem certeza de que o " + team2 + " fará " + gol_team2 + " gol(s)?");

@@ -89,29 +89,49 @@ class Bolao {
     }
     
     atualizarRanking(callback,apostas,resultado) {
-        console.log("CARALHOOO", apostas,resultado);
+        console.log("Apostas e resultado", apostas,resultado);
         var thisBolao = this;
+        console.log("Bolao att rank", this);
         var gol1 = resultado.substring(0,resultado.indexOf("X") - 1);
         var gol2 = resultado.substring(resultado.indexOf("X") + 2);
         for(let i=0;i<apostas.length;i++) {
             let palpite1 = apostas[i].palpite.substring(0,apostas[i].palpite.indexOf("X"));
             let palpite2 = apostas[i].palpite.substring(apostas[i].palpite.indexOf("X") + 1);
-            let rank = { apostador: apostas[i].dono , pontuacao: 0 };
+            let pos = this.ranking.map(function(e) { return e.apostador; }).indexOf(apostas[i].dono);
+            let rank;
+            if(pos == -1) {
+                console.log("-1");
+                rank = { apostador: apostas[i].dono , pontuacao: 0 };
+            }
+            else {
+                console.log("achou hehe");
+                rank = this.ranking[pos];
+                this.ranking.splice(pos,1);
+            }
             console.log("Gols e palpites: ", gol1,gol2,palpite1,palpite2);
-            if(gol1 == palpite1 && palpite2 == palpite2) {
+            if(gol1 == palpite1 && gol2 == palpite2) {
                 rank.pontuacao += parseFloat(this.getRegras()[0]);
             }
-            let vencedorReal = (gol1 > gol2? 1 : 2);
-            let vencedorPalpite = (palpite1 > palpite2? 1 : 2);
-            if (vencedorReal == vencedorPalpite) {
-                rank.pontuacao += parseFloat(this.getRegras()[1]);
+            if(gol1 == gol2) {
+                if(palpite1 == palpite2) {
+                    rank.pontuacao += parseFloat(this.getRegras()[1]);
+                    rank.pontuacao += 2 * parseFloat(this.getRegras()[2]);
+                }
             }
-            if(gol1 == palpite1) {
-                rank.pontuacao += parseFloat(this.getRegras()[2]);
+            else {
+                let vencedorReal = (gol1 > gol2? 1 : 2);
+                let vencedorPalpite = (palpite1 > palpite2? 1 : 2);
+                if (vencedorReal == vencedorPalpite) {
+                    rank.pontuacao += parseFloat(this.getRegras()[1]);
+                }
+                if(gol1 == palpite1) {
+                    rank.pontuacao += parseFloat(this.getRegras()[2]);
+                }
+                if(gol2 == palpite2) {
+                    rank.pontuacao += parseFloat(this.getRegras()[2]);
+                }
             }
-            if(gol2 == palpite2) {
-                rank.pontuacao += parseFloat(this.getRegras()[2]);
-            }
+            
             console.log("REGRAS: ", parseFloat(this.getRegras()[0]));
             this.ranking.push(rank);
         }

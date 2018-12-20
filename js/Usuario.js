@@ -88,10 +88,22 @@ class Usuario {
                     selectContent += "<option value=\"" + apostadoresArr[i] + "\">" + apostadoresArr[i] + "</option>";  
                 }
             }
+            Date.prototype.stdTimezoneOffset = function() {
+                var jan = new Date(this.getFullYear(), 0, 1);
+                var jul = new Date(this.getFullYear(), 6, 1);
+                return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+            }
+            Date.prototype.dst = function() {
+                return this.getTimezoneOffset() < this.stdTimezoneOffset();
+            }
             var gamesContent = "";
-            let data = new Date();
+            var data = new Date();
             let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(), data.getMinutes());
             let dataFinal = dataUtc/1000 | 0;
+            if(data.dst()) {
+                let offset = (data.stdTimezoneOffset() - data.getTimezoneOffset()) * 60;
+                dataFinal -= offset;
+            }
             //console.log("dataFinal", dataFinal);
             for(let i=0;i<bolao.getJogos().length; i++) {
                 //console.log("DataJogo", bolao.getJogos()[i].data);
@@ -101,7 +113,7 @@ class Usuario {
                                         bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : " " + bolao.getJogos()[i].getResultado() + " ") + bolao.getJogos()[i].getTime2() +
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
-                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCDate() + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMonth() + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCFullYear() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
+                                        "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCDate() + "/" + (new Date(bolao.getJogos()[i].getData() * 1000).getUTCMonth() + 1) + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCFullYear() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
                                     "</div>" +
                                     "<div style=\"font-size: 1.5em; margin: 1em;\">" +
                                         "<b>Tempo limite de aposta</b>: " + bolao.getJogos()[i].getTempoLimite()[0] + " dia " + bolao.getJogos()[i].getTempoLimite()[1] + " horas " + bolao.getJogos()[i].getTempoLimite()[2] + " minutos antes do jogo..." +
@@ -180,10 +192,24 @@ class Usuario {
                 //console.log("Sou um apostador e cliquei no bolão " + id);
                 var gamesContent = "";
                 //console.log(this);
-                let data = new Date();
-                let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(),data.getMinutes());
+                var data = new Date();
+                let dataUtc = Date.UTC(data.getFullYear(),data.getMonth(),data.getDate(),data.getHours(), data.getMinutes());
                 let dataFinal = dataUtc/1000 | 0;
+                Date.prototype.stdTimezoneOffset = function() {
+                    var jan = new Date(this.getFullYear(), 0, 1);
+                    var jul = new Date(this.getFullYear(), 6, 1);
+                    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+                }
+                Date.prototype.dst = function() {
+                    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+                }
+                if(data.dst()) {
+                    let offset = (data.stdTimezoneOffset() - data.getTimezoneOffset()) * 60;
+                    dataFinal -= offset;
+                }
                 for(let i=0;i<bolao.getJogos().length; i++) {
+                console.log(bolao.getJogos()[i].getData());
+                console.log(new Date(bolao.getJogos()[i].getData() * 1000));
                     let apostou = bolao.getJogos()[i].getApostas().filter( aposta => aposta.getDono() == this.getLogin());
                     console.log(apostou);
                     if(apostou.length != 0) {
@@ -191,12 +217,12 @@ class Usuario {
                         var pont2 = apostou[0].getPalpite().substring(apostou[0].getPalpite().indexOf("X") + 1);
                     }
                     gamesContent += "<div style=\"border: solid; border-radius: 5px; margin: 1em;   \">" +
-                                        (dataFinal>bolao.getJogos()[i].data? "<div style=\"float: right; padding: 0.5em; margin: 0.5em;\"> Este jogo já acabou! </div> " : (apostou.length==0? "<button id=\"" + bolao.getID() + "/" + bolao.getJogos()[i].getId() +"\" class=\"inserir-palp\" style=\"float: right;\" > Insira um palpite </button>" : "<button id=\"" + bolao.getID() + "/" + bolao.getJogos()[i].getId() +"\" class=\"editar-palp\" style=\"float: right;\" > Editar seu palpite </button><div class=\"palpite-atual\" style=\"float: right;margin: 0.5em;padding: 0.5em;\"> Seu palpite: " + bolao.getJogos()[i].getTime1() + " " + pont1 + " X " + pont2 + " " + bolao.getJogos()[i].getTime2()  + "</div>")) +
+                                        (dataFinal>bolao.getJogos()[i].data? "<div class=\"palpite-atual\" style=\"float: right;margin: 0.5em;padding: 0.5em;\"> Seu palpite: " + bolao.getJogos()[i].getTime1() + " " + pont1 + " X " + pont2 + " " + bolao.getJogos()[i].getTime2()  + "</div>" + "<div style=\"float: right; padding: 0.5em; margin: 0.5em;\"> Este jogo já acabou! </div> " : (apostou.length==0? "<button id=\"" + bolao.getID() + "/" + bolao.getJogos()[i].getId() +"\" class=\"inserir-palp\" style=\"float: right;\" > Insira um palpite </button>" : "<button id=\"" + bolao.getID() + "/" + bolao.getJogos()[i].getId() +"\" class=\"editar-palp\" style=\"float: right;\" > Editar seu palpite </button><div class=\"palpite-atual\" style=\"float: right;margin: 0.5em;padding: 0.5em;\"> Seu palpite: " + bolao.getJogos()[i].getTime1() + " " + pont1 + " X " + pont2 + " " + bolao.getJogos()[i].getTime2()  + "</div>")) +
                                         "<div class=\"teams\" style=\"font-size: 3.5em; margin: 1em;\">" +
                                             bolao.getJogos()[i].getTime1() + (bolao.getJogos()[i].getResultado()==""? " X " : " " + bolao.getJogos()[i].getResultado() + " ") + bolao.getJogos()[i].getTime2() +
                                         "</div>" +
                                         "<div style=\"font-size: 1.5em; margin: 1em;\">" +
-                                            "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).toLocaleDateString() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
+                                            "<b>Data do jogo</b>: " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCDate() + "/" + (new Date(bolao.getJogos()[i].getData() * 1000).getUTCMonth() + 1) + "/" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCFullYear() + " " + new Date(bolao.getJogos()[i].getData() * 1000).getUTCHours() + ":" + (String(new Date(bolao.getJogos()[0].getData() * 1000).getUTCMinutes()).length==1? "0" + new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes() : new Date(bolao.getJogos()[i].getData() * 1000).getUTCMinutes()) + ", <b>Número de apostas</b>: " + bolao.getJogos()[i].getApostas().length + ", <b>Montante</b>: " + bolao.getJogos()[i].getMontante() + " R$" + 
                                         "</div>" +
                                         "<div style=\"font-size: 1.5em; margin: 1em;\">" +
                                             "<b>Tempo limite de aposta</b>: " + bolao.getJogos()[i].getTempoLimite()[0] + " dia " + bolao.getJogos()[i].getTempoLimite()[1] + " horas " + bolao.getJogos()[i].getTempoLimite()[2] + " minutos antes do jogo..." +
